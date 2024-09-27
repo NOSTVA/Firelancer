@@ -1,0 +1,26 @@
+{
+  "name": "firelancer",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "lerna run build",
+    "dev": "lerna run dev",
+    "test": "lerna run test",
+    "lint": "lerna run lint",
+    "web:start": "npm run start -w apps/web",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@10.8.2",
+  "devDependencies": {
+    "lerna": "^8.1.8",
+    "nx": "19.6.5",
+    "prettier": "^3.3.3",
+    "typescript": "^5.4.5"
+  }
+}
