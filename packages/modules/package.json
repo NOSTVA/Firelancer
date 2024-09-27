@@ -11,6 +11,10 @@
     "./errors": {
       "types": "./src/errors.ts",
       "default": "./dist/errors.js"
+    },
+    "./log": {
+      "types": "./src/log.ts",
+      "default": "./dist/log.js"
     }
   },
   "scripts": {

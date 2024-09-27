@@ -15,18 +15,13 @@ const inputSchema = z
       ctx.addIssue({
         code: "custom",
         message: "The passwords did not match",
-        path: ["password"],
-      });
-      ctx.addIssue({
-        code: "custom",
-        message: "The passwords did not match",
-        path: ["confirmPassword"],
+        path: ["confirm_password"],
       });
     }
   });
 
 export async function signUpController(
-  input: Partial<z.infer<typeof inputSchema>>,
+  input: Partial<z.infer<typeof inputSchema>>
 ): Promise<ReturnType<typeof signUpUseCase>> {
   const { data, error: inputParseError } = inputSchema.safeParse(input);
 

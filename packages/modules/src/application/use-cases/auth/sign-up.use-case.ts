@@ -6,19 +6,17 @@ import { type Cookie } from "../../../entities/models/cookie.js";
 import { type Session } from "../../../entities/models/session.js";
 import { type User } from "../../../entities/models/user.js";
 
-export async function signUpUseCase(input: {
-  username: string;
-  email: string;
-  password: string;
-}): Promise<{
+const usersRepository = getInjection("IUsersRepository");
+const authService = getInjection("IAuthenticationService");
+
+export async function signUpUseCase(input: { username: string; email: string; password: string }): Promise<{
   session: Session;
   cookie: Cookie;
   user: Pick<User, "id" | "username" | "email" | "emailVerified">;
 }> {
-  const usersRepository = getInjection("IUsersRepository");
   const user = await usersRepository.getUserByEmail(input.email);
   if (user) {
-    throw new AuthenticationError("Username taken");
+    throw new AuthenticationError("Email already in use");
   }
 
   const passwordHash = await hash(input.password, {
@@ -28,8 +26,7 @@ export async function signUpUseCase(input: {
     parallelism: 1,
   });
 
-  const authenticationService = getInjection("IAuthenticationService");
-  const userId = authenticationService.generateUserId();
+  const userId = authService.generateUserId();
 
   const newUser = await usersRepository.createUser({
     id: userId,
@@ -39,8 +36,7 @@ export async function signUpUseCase(input: {
     hashedPassword: passwordHash,
   });
 
-  const { cookie, session } =
-    await authenticationService.createSession(newUser);
+  const { cookie, session } = await authService.createSession(newUser);
 
   return {
     cookie,

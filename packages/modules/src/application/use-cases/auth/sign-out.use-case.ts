@@ -1,10 +1,15 @@
 import { getInjection } from "../../../di/container.js";
 import { type Cookie } from "../../../entities/models/cookie.js";
+import { UnauthenticatedError } from "../../../errors.js";
 
-export async function signOutUseCase(
-  sessionId: string,
-): Promise<{ blankCookie: Cookie }> {
-  const authenticationService = getInjection("IAuthenticationService");
+const authService = getInjection("IAuthenticationService");
 
-  return await authenticationService.invalidateSession(sessionId);
+export async function signOutUseCase(sessionId: string): Promise<{ blankCookie: Cookie }> {
+  const { session } = await authService.validateSession(sessionId);
+
+  if (!session) {
+    throw new UnauthenticatedError("Unauthenticated");
+  }
+
+  return await authService.invalidateSession(sessionId);
 }

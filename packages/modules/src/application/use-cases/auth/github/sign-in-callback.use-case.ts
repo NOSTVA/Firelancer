@@ -3,15 +3,13 @@ import { getInjection } from "../../../../di/container.js";
 import env from "../../../../env.js";
 import type { GitHubUser } from "./sign-in.use-case.js";
 
-export async function signInCallbackUseCase(input: {
-  code: string;
-  state: string;
-}) {
+const usersRepository = getInjection("IUsersRepository");
+const oauthRepository = getInjection("IOAuthRepository");
+const authenticationService = getInjection("IAuthenticationService");
+const transaction = getInjection("ITransaction");
+
+export async function signInCallbackUseCase(input: { code: string; state: string }) {
   const github = new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET);
-  const usersRepository = getInjection("IUsersRepository");
-  const oauthRepository = getInjection("IOAuthRepository");
-  const authenticationService = getInjection("IAuthenticationService");
-  const transaction = getInjection("ITransaction");
 
   const tokens = await github.validateAuthorizationCode(input.code);
   const githubUserResponse = await fetch("https://api.github.com/user", {
@@ -22,10 +20,7 @@ export async function signInCallbackUseCase(input: {
 
   const githubUser: GitHubUser = await githubUserResponse.json();
 
-  const existingUser = await usersRepository.getUserByOAuthProvider(
-    "github",
-    githubUser.id,
-  );
+  const existingUser = await usersRepository.getUserByOAuthProvider("github", githubUser.id);
 
   // login existing user
   if (existingUser) {
@@ -44,7 +39,7 @@ export async function signInCallbackUseCase(input: {
         username: githubUser.login,
         hashedPassword: null,
       },
-      tx,
+      tx
     );
 
     await oauthRepository.createAccount(
@@ -53,7 +48,7 @@ export async function signInCallbackUseCase(input: {
         providerUserId: githubUser.id,
         userId: userId,
       },
-      tx,
+      tx
     );
 
     return newUser;

@@ -3,23 +3,20 @@ import type { Session } from "../../../entities/models/session.js";
 import type { User } from "../../../entities/models/user.js";
 import type { Cookie } from "../../../entities/models/cookie.js";
 
-export async function authenticateUserUseCase(input: {
-  cookie: string;
-}): Promise<{
+const autheService = getInjection("IAuthenticationService");
+
+export async function authenticateUserUseCase(input: { cookie: string }): Promise<{
   cookie: Cookie;
   session: Session | null;
   user: Pick<User, "id" | "username" | "email" | "emailVerified"> | null;
 }> {
-  const authenticationService = getInjection("IAuthenticationService");
+  const sessionId = autheService.readSessionCookie(input.cookie) || "";
+  const { session, user } = await autheService.validateSession(sessionId);
 
-  const sessionId = authenticationService.readSessionCookie(input.cookie) || "";
-  const { session, user } =
-    await authenticationService.validateSession(sessionId);
-
-  let cookie = authenticationService.createBlankSessionCookie();
+  let cookie = autheService.createBlankSessionCookie();
 
   if (session && session.fresh) {
-    cookie = authenticationService.createSessionCookie(session.id);
+    cookie = autheService.createSessionCookie(session.id);
   }
 
   return {
