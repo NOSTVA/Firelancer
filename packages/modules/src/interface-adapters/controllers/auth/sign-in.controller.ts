@@ -6,12 +6,10 @@ import { type Cookie } from "../../../entities/models/cookie.js";
 
 const inputSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6).max(31),
+  password: z.string().max(31),
 });
 
-export async function signInController(
-  input: Partial<z.infer<typeof inputSchema>>,
-): Promise<{ cookie: Cookie }> {
+export async function signInController(input: Partial<z.infer<typeof inputSchema>>): Promise<{ cookie: Cookie }> {
   const { data, error: inputParseError } = inputSchema.safeParse(input);
 
   if (inputParseError) {
