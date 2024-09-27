@@ -1,14 +1,14 @@
 "use server";
 import { actionClient } from "@/lib/safe-action";
-import { signUpSchema } from "./sign-up-validation";
+import { signInSchema } from "./sign-in-validation";
 import { auth } from "@firelancer/modules/controllers";
 import { cookies } from "next/headers";
 import { AuthenticationError, InputParseError } from "@firelancer/modules/errors";
 import { redirect } from "next/navigation";
 
-export const signUpAction = actionClient.schema(signUpSchema).action(async ({ parsedInput }) => {
+export const signInAction = actionClient.schema(signInSchema).action(async ({ parsedInput }) => {
   try {
-    const { cookie } = await auth.signUp(parsedInput);
+    const { cookie } = await auth.signIn(parsedInput);
     cookies().set(cookie.name, cookie.value, cookie.attributes);
   } catch (err) {
     if (err instanceof InputParseError || err instanceof AuthenticationError) {
@@ -22,5 +22,5 @@ export const signUpAction = actionClient.schema(signUpSchema).action(async ({ pa
     };
   }
 
-  return redirect("/");
+  return redirect("/dashboard");
 });

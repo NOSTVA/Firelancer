@@ -1,0 +1,63 @@
+{
+  "mainNav": {
+    "home": {
+      "label": "Home",
+      "href": "/dashboard",
+      "context": 0
+    },
+    "work": {
+      "label": "Work",
+      "context": 0,
+      "href": "/work",
+      "items": [
+        {
+          "label": "Post job",
+          "href": "/work/post-job",
+          "context": 2
+        },
+        {
+          "label": "My job posts",
+          "href": "/work/my-jobs",
+          "context": 2
+        },
+        {
+          "label": "Contracts",
+          "href": "/work/contracts",
+          "context": 0
+        },
+        {
+          "label": "Proposals",
+          "href": "/work/proposals",
+          "context": 1
+        }
+      ]
+    },
+    "reports": {
+      "label": "Reports",
+      "href": "/reports",
+      "context": 0,
+      "items": [
+        {
+          "label": "Transactions history",
+          "href": "/reports/transactions-history",
+          "context": 0
+        }
+      ]
+    },
+    "findTalent": {
+      "label": "Find Talent",
+      "href": "/search/freelancers",
+      "context": 0
+    },
+    "findWork": {
+      "label": "Find Work",
+      "href": "/search/projects",
+      "context": 0
+    },
+    "messages": {
+      "label": "Messages",
+      "href": "/messages",
+      "context": 0
+    }
+  }
+}

@@ -9,7 +9,7 @@ export function SignOutForm() {
   const action = useAction(signOutAction);
 
   return (
-    <Button type="button" disabled={action.isExecuting} onClick={() => action.execute()}>
+    <Button type="button" variant={"link"} disabled={action.isExecuting} onClick={() => action.execute()}>
       {action.isExecuting && <Icons.spinner className="mr-2 animate-spin h-4 w-4" />}
       Sign out
     </Button>

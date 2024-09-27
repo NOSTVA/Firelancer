@@ -1,6 +1,6 @@
+import "@/styles/globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "@/styles/globals.css";
 import { ThemeProvider } from "@/providers/themeProvider";
 import BaseLayout from "@/layouts/Base";
 
@@ -29,9 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
         <ThemeProvider>
-          <BaseLayout>
-            <div className="h-screen">{children}</div>
-          </BaseLayout>
+          <BaseLayout>{children}</BaseLayout>
         </ThemeProvider>
       </body>
     </html>

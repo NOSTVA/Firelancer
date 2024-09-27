@@ -1,7 +1,7 @@
+import { SignInForm } from "@/components/forms/sign-in/sign-in-form";
 import { getSession } from "@/lib/auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { SignInForm } from "./components/sign-in-form";
 
 export default async function Page() {
   const { user } = await getSession();
@@ -12,7 +12,7 @@ export default async function Page() {
 
   return (
     <>
-      <div className="relative h-full flex-col items-center justify-center grid lg:px-0">
+      <div className="relative h-full min-h-screen flex-col items-center justify-center grid lg:px-0">
         <div className="flex flex-col space-y-8">
           <div className="border border-1 rounded-lg shadow-lg p-12">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">

@@ -1,17 +1,15 @@
 "use server";
 import { actionClient } from "@/lib/safe-action";
+import { signUpSchema } from "./sign-up-validation";
 import { auth } from "@firelancer/modules/controllers";
 import { cookies } from "next/headers";
 import { AuthenticationError, InputParseError } from "@firelancer/modules/errors";
 import { redirect } from "next/navigation";
-import { getSession } from "@/lib/auth";
 
-export const signOutAction = actionClient.action(async () => {
+export const signUpAction = actionClient.schema(signUpSchema).action(async ({ parsedInput }) => {
   try {
-    const { session } = await getSession();
-
-    const { blankCookie } = await auth.signOut(session?.id);
-    cookies().set(blankCookie.name, blankCookie.value, blankCookie.attributes);
+    const { cookie } = await auth.signUp(parsedInput);
+    cookies().set(cookie.name, cookie.value, cookie.attributes);
   } catch (err) {
     if (err instanceof InputParseError || err instanceof AuthenticationError) {
       return {
@@ -24,5 +22,5 @@ export const signOutAction = actionClient.action(async () => {
     };
   }
 
-  return redirect("/signin");
+  return redirect("/dashboard");
 });
