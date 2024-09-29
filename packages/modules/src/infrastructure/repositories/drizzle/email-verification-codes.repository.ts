@@ -32,7 +32,6 @@ export class EmailVerificationCodesRepository
       throw err; // TODO: convert to Entities error
     }
   }
-
   async deleteVerificationCode(code: string, conn: DrizzleConnection = db) {
     try {
       const query = conn
@@ -47,7 +46,6 @@ export class EmailVerificationCodesRepository
       throw err; // TODO: convert to Entities error
     }
   }
-
   async deleteVerificationCodeByUserId(
     userId: string,
     conn: DrizzleConnection = db,
@@ -65,7 +63,6 @@ export class EmailVerificationCodesRepository
       throw err; // TODO: convert to Entities error
     }
   }
-
   async getVerificationCodeByUserId(
     userId: string,
     conn: DrizzleConnection = db,

@@ -1,5 +1,5 @@
 import { hash } from "@node-rs/argon2";
-
+import { randomUUID } from "crypto";
 import { getInjection } from "../../../di/container.js";
 import { AuthenticationError } from "../../../entities/errors/auth.js";
 import { type Cookie } from "../../../entities/models/cookie.js";
@@ -8,6 +8,8 @@ import { type User } from "../../../entities/models/user.js";
 
 const usersRepository = getInjection("IUsersRepository");
 const authService = getInjection("IAuthenticationService");
+const accountsRepository = getInjection("IAccountsRepository");
+const transaction = getInjection("ITransaction");
 
 export async function signUpUseCase(input: {
   username: string;
@@ -30,14 +32,29 @@ export async function signUpUseCase(input: {
     parallelism: 1,
   });
 
-  const userId = authService.generateUserId();
+  const newUser = await transaction.create(async (tx) => {
+    const user = await usersRepository.createUser(
+      {
+        id: authService.generateUserId(),
+        email: input.email,
+        emailVerified: false,
+        username: input.username,
+        hashedPassword: passwordHash,
+      },
+      tx,
+    );
 
-  const newUser = await usersRepository.createUser({
-    id: userId,
-    email: input.email,
-    emailVerified: false,
-    username: input.username,
-    hashedPassword: passwordHash,
+    await accountsRepository.createAccount(
+      {
+        id: randomUUID(),
+        userId: user.id,
+        status: "OPEN",
+        creationDate: new Date(),
+      },
+      tx,
+    );
+
+    return user;
   });
 
   const { cookie, session } = await authService.createSession(newUser);

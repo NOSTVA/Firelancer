@@ -8,6 +8,10 @@ export interface IAccountsRepository {
     userId: string,
     tx?: TransactionScope,
   ): Promise<Account[]>;
+  getAccountByUserId(
+    userId: string,
+    tx?: TransactionScope,
+  ): Promise<Account | undefined>;
   getAccountById(
     accountId: string,
     tx?: TransactionScope,
@@ -21,16 +25,25 @@ export interface IAccountsRepository {
     input: BalanceEntry,
     tx?: TransactionScope,
   ): Promise<BalanceEntry>;
-  getAccountAvailableBalance(
+  getBalanceEntryById(
+    entryId: string,
+    tx?: TransactionScope,
+  ): Promise<BalanceEntry | undefined>;
+  getLatestSettledBalanceEntry(
     accountId: string,
     tx?: TransactionScope,
-  ): Promise<{ amount: string }>;
-  getAccountPendingBalance(
-    accountId: string,
-    tx?: TransactionScope,
-  ): Promise<{ amount: string }>;
-  getAccountBalanceEntries(
+  ): Promise<BalanceEntry | undefined>;
+  getUnsettledBalanceEntries(
     accountId: string,
     tx?: TransactionScope,
   ): Promise<BalanceEntry[]>;
+  getBalanceEntries(
+    accountId: string,
+    tx?: TransactionScope,
+  ): Promise<BalanceEntry[]>;
+  updateBalanceEntryById(
+    entryId: string,
+    input: Partial<BalanceEntry>,
+    tx?: TransactionScope,
+  ): Promise<BalanceEntry | undefined>;
 }

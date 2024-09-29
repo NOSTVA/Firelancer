@@ -26,7 +26,6 @@ export class UsersRepository implements IUsersRepository {
       throw err; // TODO: convert to Entities error
     }
   }
-
   async getUserByEmail(
     email: string,
     conn: DrizzleConnection = db,
@@ -43,7 +42,6 @@ export class UsersRepository implements IUsersRepository {
       throw err; // TODO: convert to Entities error
     }
   }
-
   async updateUserById(
     userId: string,
     input: Partial<User>,
@@ -67,7 +65,6 @@ export class UsersRepository implements IUsersRepository {
       throw err; // TODO: convert to Entities error
     }
   }
-
   async getUserByOAuthProvider(
     providerId: OAuthProvider,
     providerUserId: string,
@@ -91,7 +88,6 @@ export class UsersRepository implements IUsersRepository {
       throw err; // TODO: convert to Entities error
     }
   }
-
   async createUser(input: User, conn: DrizzleConnection = db): Promise<User> {
     try {
       const query = conn.insert(users).values(input).returning();

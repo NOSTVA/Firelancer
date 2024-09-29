@@ -1,9 +1,20 @@
+import { Transaction } from "../../entities/models/transaction.js";
+import { TransactionScope } from "../repositories/transaction.interface.js";
+
 export interface IAccountingService {
-  initializeTransaction(transaction: {
-    senderId: string | null;
-    recipientId: string | null;
-    amount: number;
-    orderId: string | null;
-  }): Promise<void>;
-  settleAccountBalance(balanceEntryId: string): Promise<void>;
+  initializeTransaction(details: {
+    sender?: {
+      accountId: string;
+    };
+    recipient?: {
+      accountId: string;
+    };
+    amount: string;
+    dueDate?: Date;
+    orderId?: string;
+  }): Promise<Transaction>;
+  settleAccountBalance(
+    balanceEntryId: string,
+    tx?: TransactionScope,
+  ): Promise<void>;
 }

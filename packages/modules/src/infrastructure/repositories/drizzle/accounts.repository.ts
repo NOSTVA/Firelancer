@@ -1,11 +1,11 @@
 import { injectable } from "inversify";
+import { eq } from "drizzle-orm";
 import { IAccountsRepository } from "../../../application/repositories/accounts.repository.interface.js";
 import { Account } from "../../../entities/models/account.js";
 import { DrizzleConnection } from "./transaction.js";
 import { db } from "./db/index.js";
 import { balances, accounts } from "./schema/index.js";
 import { DatabaseOperationError } from "../../../errors.js";
-import { and, desc, eq, isNotNull, isNull, sql } from "drizzle-orm";
 import { BalanceEntry } from "../../../entities/models/balance.js";
 
 @injectable()
@@ -15,20 +15,9 @@ export class AccountsRepository implements IAccountsRepository {
     conn: DrizzleConnection = db,
   ): Promise<Account> {
     try {
-      const query = conn.query.accounts.findFirst({
-        where: (t, { eq, and }) =>
-          and(eq(t.userId, input.userId), eq(t.status, "OPEN")),
-      });
+      const query = conn.insert(accounts).values(input).returning();
 
-      const openAccount = await query.execute();
-
-      if (openAccount) {
-        throw new Error("An open account already exists for this user.");
-      }
-
-      const query2 = conn.insert(accounts).values(input).returning();
-
-      const [created] = await query2.execute();
+      const [created] = await query.execute();
 
       if (created) {
         return created;
@@ -51,6 +40,23 @@ export class AccountsRepository implements IAccountsRepository {
       const userAccounts = await query.execute();
 
       return userAccounts;
+    } catch (err) {
+      throw err; // TODO: convert to Entities error
+    }
+  }
+  async getAccountByUserId(
+    userId: string,
+    conn: DrizzleConnection = db,
+  ): Promise<Account | undefined> {
+    try {
+      const query = conn.query.accounts.findFirst({
+        where: (t, { eq, and }) =>
+          and(eq(t.userId, userId), eq(t.status, "OPEN")),
+      });
+
+      const account = await query.execute();
+
+      return account;
     } catch (err) {
       throw err; // TODO: convert to Entities error
     }
@@ -108,59 +114,67 @@ export class AccountsRepository implements IAccountsRepository {
       throw err; // TODO: convert to Entities error
     }
   }
-  async getAccountAvailableBalance(
-    accountId: string,
+  async getBalanceEntryById(
+    entryId: string,
     conn: DrizzleConnection = db,
-  ): Promise<{ amount: string }> {
+  ): Promise<BalanceEntry | undefined> {
     try {
-      const query = conn
-        .select({
-          balance: sql<string>`COALESCE(${balances.balance}, 0)`,
-        })
-        .from(balances)
-        .where(
-          and(
-            eq(balances.id, accountId),
-            isNotNull(balances.balance),
-            isNotNull(balances.settledDate),
-          ),
-        )
-        .orderBy(desc(balances.settledDate))
-        .limit(1);
+      const query = conn.query.balances.findFirst({
+        where: (t, { eq }) => eq(t.id, entryId),
+      });
 
-      const [result] = await query.execute();
+      const entry = await query.execute();
 
-      return { amount: result ? result.balance : "0" };
+      return entry;
     } catch (err) {
       throw err; // TODO: convert to Entities error
     }
   }
-  async getAccountPendingBalance(
+  async getLatestSettledBalanceEntry(
     accountId: string,
     conn: DrizzleConnection = db,
-  ): Promise<{ amount: string }> {
+  ): Promise<BalanceEntry | undefined> {
     try {
-      const query = conn
-        .select({
-          balance: sql<string>`COALESCE(SUM(${balances.credit} - ${balances.debit}), 0)`,
-        })
-        .from(balances)
-        .where(
+      const query = conn.query.balances.findFirst({
+        where: (t, { and, eq, isNotNull }) =>
           and(
-            eq(balances.id, accountId),
-            isNull(balances.balance),
-            isNull(balances.settledDate),
+            eq(t.accountId, accountId),
+            isNotNull(t.balance),
+            isNotNull(t.settledDate),
           ),
-        );
+        orderBy: (t, { desc }) => desc(t.settledDate),
+      });
 
-      const [result] = await query.execute();
+      const entry = await query.execute();
 
-      return { amount: result ? result.balance : "0" };
+      return entry;
     } catch (err) {
       throw err; // TODO: convert to Entities error
     }
   }
-  async getAccountBalanceEntries(
+  async getUnsettledBalanceEntries(
+    accountId: string,
+    conn: DrizzleConnection = db,
+  ): Promise<BalanceEntry[]> {
+    try {
+      const query = conn.query.balances.findMany({
+        where: (t, { and, eq, isNull }) =>
+          and(
+            eq(t.accountId, accountId),
+            isNull(t.balance),
+            isNull(t.settledDate),
+          ),
+        orderBy: (t, { desc }) => desc(t.creationDate),
+      });
+
+      const entries = await query.execute();
+
+      return entries;
+    } catch (err) {
+      throw err; // TODO: convert to Entities error
+    }
+  }
+  async getBalanceEntries(
     accountId: string,
     conn: DrizzleConnection = db,
   ): Promise<BalanceEntry[]> {
@@ -172,9 +186,28 @@ export class AccountsRepository implements IAccountsRepository {
         },
       });
 
-      const transactions = await query.execute();
+      const entries = await query.execute();
 
-      return transactions;
+      return entries;
+    } catch (err) {
+      throw err; // TODO: convert to Entities error
+    }
+  }
+  async updateBalanceEntryById(
+    entryId: string,
+    input: Partial<BalanceEntry>,
+    conn: DrizzleConnection = db,
+  ): Promise<BalanceEntry | undefined> {
+    try {
+      const query = conn
+        .update(balances)
+        .set(input)
+        .where(eq(balances.id, entryId))
+        .returning();
+
+      const [updated] = await query.execute();
+
+      return updated;
     } catch (err) {
       throw err; // TODO: convert to Entities error
     }

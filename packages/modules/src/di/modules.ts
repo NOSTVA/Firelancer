@@ -16,6 +16,8 @@ import { ITransactionsRepository } from "../application/repositories/transaction
 import { TransactionsRepository } from "../infrastructure/repositories/drizzle/transactions.repository.js";
 import { IAccountsRepository } from "../application/repositories/accounts.repository.interface.js";
 import { AccountsRepository } from "../infrastructure/repositories/drizzle/accounts.repository.js";
+import { IAccountingService } from "../application/services/accounting.service.interface.js";
+import { AccountingService } from "../infrastructure/services/accounting.service.js";
 
 export const MailerServiceModule = new ContainerModule(
   (bind: interfaces.Bind) => {
@@ -27,6 +29,14 @@ export const AuthenticationServiceModule = new ContainerModule(
   (bind: interfaces.Bind) => {
     bind<IAuthenticationService>(DI_SYMBOLS.IAuthenticationService).to(
       AuthenticationService,
+    );
+  },
+);
+
+export const AccountingServiceModule = new ContainerModule(
+  (bind: interfaces.Bind) => {
+    bind<IAccountingService>(DI_SYMBOLS.IAccountingService).to(
+      AccountingService,
     );
   },
 );

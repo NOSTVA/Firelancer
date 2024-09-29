@@ -1,5 +1,6 @@
 import { Container } from "inversify";
 import {
+  AccountingServiceModule,
   AccountsRepositoryModule,
   AuthenticationServiceModule,
   EmailVerificationCodesRepositoryModule,
@@ -21,6 +22,7 @@ export const initializeContainer = () => {
   if (!CONTAINER_INIT) {
     ApplicationContainer.load(UsersRepositoryModule);
     ApplicationContainer.load(AuthenticationServiceModule);
+    ApplicationContainer.load(AccountingServiceModule);
     ApplicationContainer.load(OAuthRepositoryModule);
     ApplicationContainer.load(TransactionModule);
     ApplicationContainer.load(MailerServiceModule);
@@ -35,6 +37,7 @@ export const destroyContainer = () => {
   if (CONTAINER_INIT) {
     ApplicationContainer.unload(UsersRepositoryModule);
     ApplicationContainer.unload(AuthenticationServiceModule);
+    ApplicationContainer.unload(AccountingServiceModule);
     ApplicationContainer.unload(OAuthRepositoryModule);
     ApplicationContainer.unload(TransactionModule);
     ApplicationContainer.unload(MailerServiceModule);

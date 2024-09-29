@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { generateIdFromEntropySize, Lucia } from "lucia";
+import { generateIdFromEntropySize, Lucia, TimeSpan } from "lucia";
 
 import { DI_SYMBOLS } from "../../di/types.js";
 import { type IUsersRepository } from "../../application/repositories/users.repository.interface.js";
@@ -19,6 +19,7 @@ export class AuthenticationService implements IAuthenticationService {
     private _usersRepository: IUsersRepository,
   ) {
     this._lucia = new Lucia(luciaAdapter, {
+      sessionExpiresIn: new TimeSpan(2, "w"),
       sessionCookie: {
         name: env.SESSION_COOKIE,
         expires: false,

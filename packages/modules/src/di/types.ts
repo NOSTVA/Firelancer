@@ -4,6 +4,7 @@ import type { IOAuthRepository } from "../application/repositories/oauth.reposit
 import type { ITransaction } from "../application/repositories/transaction.interface.js";
 import { ITransactionsRepository } from "../application/repositories/transactions.repository.interface.js";
 import type { IUsersRepository } from "../application/repositories/users.repository.interface.js";
+import { IAccountingService } from "../application/services/accounting.service.interface.js";
 import type { IAuthenticationService } from "../application/services/authentication.service.interface.js";
 import type { IMailerService } from "../application/services/mailer.service.interface.js";
 
@@ -12,6 +13,7 @@ export const DI_SYMBOLS = {
   // Services
   IAuthenticationService: Symbol.for("IAuthenticationService"),
   IMailerService: Symbol.for("IMailerService"),
+  IAccountingService: Symbol.for("IAccountingService"),
 
   // Repositories
   IUsersRepository: Symbol.for("IUsersRepository"),
@@ -28,6 +30,7 @@ export interface DI_RETURN_TYPES {
   // Services
   IAuthenticationService: IAuthenticationService;
   IMailerService: IMailerService;
+  IAccountingService: IAccountingService;
 
   // Repositories
   IUsersRepository: IUsersRepository;

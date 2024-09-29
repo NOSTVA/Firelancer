@@ -7,6 +7,7 @@ import { sendEmailVerificationCodeController } from "./interface-adapters/contro
 import { verifyEmailVerificationCodeController } from "./interface-adapters/controllers/auth/verify-email-verification-code.controller.js";
 import { signInGithubController } from "./interface-adapters/controllers/auth/github/sign-in.controller.js";
 import { signInGithubCallbackController } from "./interface-adapters/controllers/auth/github/sign-in-callback.controller.js";
+import { getAccountController } from "./interface-adapters/controllers/accounting/get-account.controller.js";
 
 const auth = {
   authenticateUser: authenticateUserController,
@@ -21,4 +22,8 @@ const auth = {
   },
 };
 
-export { auth };
+const accounting = {
+  getAccount: getAccountController,
+};
+
+export { auth, accounting };

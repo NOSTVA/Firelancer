@@ -1,11 +1,13 @@
 import { GitHub } from "arctic";
+import { randomUUID } from "crypto";
 import { getInjection } from "../../../../di/container.js";
-import env from "../../../../env.js";
 import type { GitHubUser } from "./sign-in.use-case.js";
+import env from "../../../../env.js";
 
 const usersRepository = getInjection("IUsersRepository");
 const oauthRepository = getInjection("IOAuthRepository");
-const authenticationService = getInjection("IAuthenticationService");
+const authService = getInjection("IAuthenticationService");
+const accountsRepository = getInjection("IAccountsRepository");
 const transaction = getInjection("ITransaction");
 
 export async function signInCallbackUseCase(input: {
@@ -30,16 +32,14 @@ export async function signInCallbackUseCase(input: {
 
   // login existing user
   if (existingUser) {
-    return await authenticationService.createSession(existingUser);
+    return await authService.createSession(existingUser);
   }
 
   // register new user
-  const userId = authenticationService.generateUserId();
-
   const newUser = await transaction.create(async (tx) => {
-    const newUser = await usersRepository.createUser(
+    const user = await usersRepository.createUser(
       {
-        id: userId,
+        id: authService.generateUserId(),
         email: null,
         emailVerified: false,
         username: githubUser.login,
@@ -48,17 +48,27 @@ export async function signInCallbackUseCase(input: {
       tx,
     );
 
-    await oauthRepository.createAccount(
+    await accountsRepository.createAccount(
       {
-        providerId: "github",
-        providerUserId: githubUser.id,
-        userId: userId,
+        id: randomUUID(),
+        userId: user.id,
+        status: "OPEN",
+        creationDate: new Date(),
       },
       tx,
     );
 
-    return newUser;
+    await oauthRepository.createAccount(
+      {
+        providerId: "github",
+        providerUserId: githubUser.id,
+        userId: user.id,
+      },
+      tx,
+    );
+
+    return user;
   });
 
-  return await authenticationService.createSession(newUser);
+  return await authService.createSession(newUser);
 }
