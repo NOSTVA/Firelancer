@@ -9,7 +9,11 @@ import { type User } from "../../../entities/models/user.js";
 const usersRepository = getInjection("IUsersRepository");
 const authService = getInjection("IAuthenticationService");
 
-export async function signUpUseCase(input: { username: string; email: string; password: string }): Promise<{
+export async function signUpUseCase(input: {
+  username: string;
+  email: string;
+  password: string;
+}): Promise<{
   session: Session;
   cookie: Cookie;
   user: Pick<User, "id" | "username" | "email" | "emailVerified">;

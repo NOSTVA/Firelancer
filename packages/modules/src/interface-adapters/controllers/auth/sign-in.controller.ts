@@ -9,7 +9,9 @@ const inputSchema = z.object({
   password: z.string().max(31),
 });
 
-export async function signInController(input: Partial<z.infer<typeof inputSchema>>): Promise<{ cookie: Cookie }> {
+export async function signInController(
+  input: Partial<z.infer<typeof inputSchema>>,
+): Promise<{ cookie: Cookie }> {
   const { data, error: inputParseError } = inputSchema.safeParse(input);
 
   if (inputParseError) {

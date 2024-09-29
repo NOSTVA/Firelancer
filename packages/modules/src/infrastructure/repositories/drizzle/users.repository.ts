@@ -5,7 +5,7 @@ import { type User } from "../../../entities/models/user.js";
 import { type IUsersRepository } from "../../../application/repositories/users.repository.interface.js";
 import { DatabaseOperationError } from "../../../entities/errors/common.js";
 import type { OAuthProvider } from "../../../entities/models/oauth.js";
-import type { DrizzleConnection } from "./transaction.repo.js";
+import type { DrizzleConnection } from "./transaction.js";
 import { db } from "./db/index.js";
 
 @injectable()

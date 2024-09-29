@@ -3,7 +3,7 @@ import type { IOAuthRepository } from "../../../application/repositories/oauth.r
 import type { OAuthAccount } from "../../../entities/models/oauth.js";
 import { oauthAccounts } from "./schema/index.js";
 import { DatabaseOperationError } from "../../../entities/errors/common.js";
-import type { DrizzleConnection } from "./transaction.repo.js";
+import type { DrizzleConnection } from "./transaction.js";
 import { db } from "./db/index.js";
 
 @injectable()

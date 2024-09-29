@@ -1,10 +1,10 @@
 import { injectable } from "inversify";
 import { EmailVerificationCode } from "../../../entities/models/email-verification-code.js";
-import { DrizzleConnection } from "./transaction.repo.js";
+import { DrizzleConnection } from "./transaction.js";
 import { emailVerificationCodes } from "./schema/index.js";
 import { DatabaseOperationError } from "../../../entities/errors/common.js";
 import { eq } from "drizzle-orm";
-import { IEmailVerificationCodesRepository } from "../../../application/repositories/email-verification-codes.interface.js";
+import { IEmailVerificationCodesRepository } from "../../../application/repositories/email-verification-codes.repository.interface.js";
 import { db } from "./db/index.js";
 
 @injectable()

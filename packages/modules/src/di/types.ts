@@ -1,6 +1,8 @@
-import type { IEmailVerificationCodesRepository } from "../application/repositories/email-verification-codes.interface.js";
+import { IAccountsRepository } from "../application/repositories/accounts.repository.interface.js";
+import type { IEmailVerificationCodesRepository } from "../application/repositories/email-verification-codes.repository.interface.js";
 import type { IOAuthRepository } from "../application/repositories/oauth.repository.interface.js";
 import type { ITransaction } from "../application/repositories/transaction.interface.js";
+import { ITransactionsRepository } from "../application/repositories/transactions.repository.interface.js";
 import type { IUsersRepository } from "../application/repositories/users.repository.interface.js";
 import type { IAuthenticationService } from "../application/services/authentication.service.interface.js";
 import type { IMailerService } from "../application/services/mailer.service.interface.js";
@@ -17,6 +19,8 @@ export const DI_SYMBOLS = {
   IEmailVerificationCodesRepository: Symbol.for(
     "IEmailVerificationCodesRepository",
   ),
+  IAccountsRepository: Symbol.for("IAccountsRepository"),
+  ITransactionsRepository: Symbol.for("ITransactionsRepository"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -29,4 +33,6 @@ export interface DI_RETURN_TYPES {
   IUsersRepository: IUsersRepository;
   IOAuthRepository: IOAuthRepository;
   IEmailVerificationCodesRepository: IEmailVerificationCodesRepository;
+  IAccountsRepository: IAccountsRepository;
+  ITransactionsRepository: ITransactionsRepository;
 }

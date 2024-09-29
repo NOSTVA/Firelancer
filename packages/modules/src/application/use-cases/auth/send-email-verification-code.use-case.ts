@@ -4,9 +4,14 @@ import { createDate, TimeSpan } from "oslo";
 import env from "../../../env.js";
 
 const mailerService = getInjection("IMailerService");
-const emailVerificationCodeRepository = getInjection("IEmailVerificationCodesRepository");
+const emailVerificationCodeRepository = getInjection(
+  "IEmailVerificationCodesRepository",
+);
 
-export async function sendEmailVerificationCodeUseCase(input: { userId: string; email: string }) {
+export async function sendEmailVerificationCodeUseCase(input: {
+  userId: string;
+  email: string;
+}) {
   const { userId, email } = input;
   const code = await generateEmailVerificationCode({
     userId,
@@ -21,7 +26,10 @@ export async function sendEmailVerificationCodeUseCase(input: { userId: string; 
   });
 }
 
-async function generateEmailVerificationCode(input: { userId: string; email: string }) {
+async function generateEmailVerificationCode(input: {
+  userId: string;
+  email: string;
+}) {
   const { userId, email } = input;
 
   await emailVerificationCodeRepository.deleteVerificationCodeByUserId(userId);

@@ -5,7 +5,9 @@ import type { Cookie } from "../../../entities/models/cookie.js";
 
 const autheService = getInjection("IAuthenticationService");
 
-export async function authenticateUserUseCase(input: { cookie: string }): Promise<{
+export async function authenticateUserUseCase(input: {
+  cookie: string;
+}): Promise<{
   cookie: Cookie;
   session: Session | null;
   user: Pick<User, "id" | "username" | "email" | "emailVerified"> | null;

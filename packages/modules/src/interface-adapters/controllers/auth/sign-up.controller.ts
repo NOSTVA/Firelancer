@@ -21,7 +21,7 @@ const inputSchema = z
   });
 
 export async function signUpController(
-  input: Partial<z.infer<typeof inputSchema>>
+  input: Partial<z.infer<typeof inputSchema>>,
 ): Promise<ReturnType<typeof signUpUseCase>> {
   const { data, error: inputParseError } = inputSchema.safeParse(input);
 

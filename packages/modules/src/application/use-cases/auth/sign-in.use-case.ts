@@ -18,12 +18,16 @@ export async function signInUseCase(input: {
     throw new AuthenticationError("Incorrect email or password");
   }
 
-  const validPassword = await verify(existingUser.hashedPassword!, input.password, {
-    memoryCost: 19456,
-    timeCost: 2,
-    outputLen: 32,
-    parallelism: 1,
-  });
+  const validPassword = await verify(
+    existingUser.hashedPassword!,
+    input.password,
+    {
+      memoryCost: 19456,
+      timeCost: 2,
+      outputLen: 32,
+      parallelism: 1,
+    },
+  );
 
   if (!validPassword) {
     throw new AuthenticationError("Incorrect email or password");

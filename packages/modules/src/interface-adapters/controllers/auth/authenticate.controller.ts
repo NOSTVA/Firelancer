@@ -8,10 +8,17 @@ const inputSchema = z.object({
   cookie: z.string(),
 });
 
-export async function authenticateUserController(input: { cookie: string }): Promise<{
+export async function authenticateUserController(input: {
+  cookie: string;
+}): Promise<{
   cookie: Cookie;
   session: Session | null;
-  user: { id: string; username: string; email: string | null; emailVerified: boolean } | null;
+  user: {
+    id: string;
+    username: string;
+    email: string | null;
+    emailVerified: boolean;
+  } | null;
 }> {
   const { data, error: inputParseError } = inputSchema.safeParse(input);
 

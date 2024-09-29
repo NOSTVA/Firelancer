@@ -1,10 +1,12 @@
 import { Container } from "inversify";
 import {
+  AccountsRepositoryModule,
   AuthenticationServiceModule,
   EmailVerificationCodesRepositoryModule,
   MailerServiceModule,
   OAuthRepositoryModule,
   TransactionModule,
+  TransactionsRepositoryModule,
   UsersRepositoryModule,
 } from "./modules.js";
 import type { DI_RETURN_TYPES } from "./types.js";
@@ -23,18 +25,22 @@ export const initializeContainer = () => {
     ApplicationContainer.load(TransactionModule);
     ApplicationContainer.load(MailerServiceModule);
     ApplicationContainer.load(EmailVerificationCodesRepositoryModule);
+    ApplicationContainer.load(AccountsRepositoryModule);
+    ApplicationContainer.load(TransactionsRepositoryModule);
     CONTAINER_INIT = true;
   }
 };
 
 export const destroyContainer = () => {
   if (CONTAINER_INIT) {
-    ApplicationContainer.load(UsersRepositoryModule);
-    ApplicationContainer.load(AuthenticationServiceModule);
-    ApplicationContainer.load(OAuthRepositoryModule);
-    ApplicationContainer.load(TransactionModule);
-    ApplicationContainer.load(MailerServiceModule);
-    ApplicationContainer.load(EmailVerificationCodesRepositoryModule);
+    ApplicationContainer.unload(UsersRepositoryModule);
+    ApplicationContainer.unload(AuthenticationServiceModule);
+    ApplicationContainer.unload(OAuthRepositoryModule);
+    ApplicationContainer.unload(TransactionModule);
+    ApplicationContainer.unload(MailerServiceModule);
+    ApplicationContainer.unload(EmailVerificationCodesRepositoryModule);
+    ApplicationContainer.unload(AccountsRepositoryModule);
+    ApplicationContainer.unload(TransactionsRepositoryModule);
     CONTAINER_INIT = false;
   }
 };

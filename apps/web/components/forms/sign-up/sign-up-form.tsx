@@ -6,14 +6,25 @@ import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hoo
 import { signUpAction } from "./sign-up-action";
 import { signUpSchema } from "./sign-up-validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 export function SignUpForm() {
-  const { form, action, handleSubmitWithAction } = useHookFormAction(signUpAction, zodResolver(signUpSchema), {
-    actionProps: {},
-    formProps: {},
-    errorMapProps: {},
-  });
+  const { form, action, handleSubmitWithAction } = useHookFormAction(
+    signUpAction,
+    zodResolver(signUpSchema),
+    {
+      actionProps: {},
+      formProps: {},
+      errorMapProps: {},
+    },
+  );
 
   return (
     <div className={"grid gap-6"}>
@@ -69,7 +80,12 @@ export function SignUpForm() {
                     Password
                   </FormLabel>
                   <FormControl>
-                    <Input {...field} id="password" placeholder="Password" type="password" />
+                    <Input
+                      {...field}
+                      id="password"
+                      placeholder="Password"
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,7 +101,12 @@ export function SignUpForm() {
                     Confirm Password
                   </FormLabel>
                   <FormControl>
-                    <Input {...field} id="confirm_password" placeholder="Confirm Password" type="password" />
+                    <Input
+                      {...field}
+                      id="confirm_password"
+                      placeholder="Confirm Password"
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,7 +117,9 @@ export function SignUpForm() {
             <FormMessage>{action.result.data?.failure}</FormMessage>
 
             <Button disabled={action.isExecuting}>
-              {action.isExecuting && <Icons.spinner className="mr-2 animate-spin h-4 w-4" />}
+              {action.isExecuting && (
+                <Icons.spinner className="mr-2 animate-spin h-4 w-4" />
+              )}
               Join Firelancer
             </Button>
           </div>

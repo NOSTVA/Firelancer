@@ -1,6 +1,13 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { signInAction } from "./sign-in-action";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -9,11 +16,15 @@ import { Icons } from "@/components/custom/icons";
 import { signInSchema } from "./sign-in-validation";
 
 export function SignInForm() {
-  const { form, action, handleSubmitWithAction } = useHookFormAction(signInAction, zodResolver(signInSchema), {
-    actionProps: {},
-    formProps: {},
-    errorMapProps: {},
-  });
+  const { form, action, handleSubmitWithAction } = useHookFormAction(
+    signInAction,
+    zodResolver(signInSchema),
+    {
+      actionProps: {},
+      formProps: {},
+      errorMapProps: {},
+    },
+  );
 
   return (
     <div className={"grid gap-6"}>
@@ -71,7 +82,9 @@ export function SignInForm() {
             <FormMessage>{action.result.data?.failure}</FormMessage>
 
             <Button disabled={action.isExecuting}>
-              {action.isExecuting && <Icons.spinner className="mr-2 animate-spin h-4 w-4" />}
+              {action.isExecuting && (
+                <Icons.spinner className="mr-2 animate-spin h-4 w-4" />
+              )}
               Sign In
             </Button>
           </div>

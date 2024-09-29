@@ -4,7 +4,9 @@ import { UnauthenticatedError } from "../../../errors.js";
 
 const authService = getInjection("IAuthenticationService");
 
-export async function signOutUseCase(sessionId: string): Promise<{ blankCookie: Cookie }> {
+export async function signOutUseCase(
+  sessionId: string,
+): Promise<{ blankCookie: Cookie }> {
   const { session } = await authService.validateSession(sessionId);
 
   if (!session) {

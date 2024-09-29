@@ -16,5 +16,8 @@ export interface NavItemWithChildren extends NavItem {
 }
 
 export interface SiteNavigation {
-  mainNav: Record<"work" | "reports" | "findTalent" | "findWork" | "messages", NavItemWithChildren>;
+  mainNav: Record<
+    "work" | "reports" | "findTalent" | "findWork" | "messages",
+    NavItemWithChildren
+  >;
 }
