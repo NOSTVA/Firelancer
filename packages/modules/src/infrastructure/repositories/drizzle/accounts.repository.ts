@@ -4,13 +4,20 @@ import { IAccountsRepository } from "../../../application/repositories/accounts.
 import { Account } from "../../../entities/models/account.js";
 import { DrizzleConnection } from "./transaction.js";
 import { db } from "./db/index.js";
-import { accountTransactionMeta, accountTransactions, accounts } from "./schema/index.js";
+import {
+  accountTransactionMeta,
+  accountTransactions,
+  accounts,
+} from "./schema/index.js";
 import { DatabaseOperationError } from "../../../errors.js";
 import { AccountTransaction } from "../../../entities/models/account-transaction.js";
 
 @injectable()
 export class AccountsRepository implements IAccountsRepository {
-  async createAccount(input: Account, conn: DrizzleConnection = db): Promise<Account> {
+  async createAccount(
+    input: Account,
+    conn: DrizzleConnection = db,
+  ): Promise<Account> {
     try {
       const query = conn.insert(accounts).values(input).returning();
 
@@ -25,7 +32,10 @@ export class AccountsRepository implements IAccountsRepository {
       throw err; // TODO: convert to Entities error
     }
   }
-  async getAccountByUserId(userId: string, conn: DrizzleConnection = db): Promise<Account | undefined> {
+  async getAccountByUserId(
+    userId: string,
+    conn: DrizzleConnection = db,
+  ): Promise<Account | undefined> {
     try {
       const query = conn.query.accounts.findFirst({
         where: (t, { eq }) => eq(t.userId, userId),
@@ -38,7 +48,10 @@ export class AccountsRepository implements IAccountsRepository {
       throw err; // TODO: convert to Entities error
     }
   }
-  async getAccountById(accountId: string, conn: DrizzleConnection = db): Promise<Account | undefined> {
+  async getAccountById(
+    accountId: string,
+    conn: DrizzleConnection = db,
+  ): Promise<Account | undefined> {
     try {
       const query = conn.query.accounts.findFirst({
         where: (t, { eq }) => eq(t.id, accountId),
@@ -54,10 +67,14 @@ export class AccountsRepository implements IAccountsRepository {
   async updateAccountById(
     accountId: string,
     input: Partial<Account>,
-    conn: DrizzleConnection = db
+    conn: DrizzleConnection = db,
   ): Promise<Account | undefined> {
     try {
-      const query = conn.update(accounts).set(input).where(eq(accounts.id, accountId)).returning();
+      const query = conn
+        .update(accounts)
+        .set(input)
+        .where(eq(accounts.id, accountId))
+        .returning();
 
       const [updated] = await query.execute();
 
@@ -66,15 +83,24 @@ export class AccountsRepository implements IAccountsRepository {
       throw err; // TODO: convert to Entities error
     }
   }
-  async createAccountTransaction(input: AccountTransaction, conn: DrizzleConnection = db): Promise<AccountTransaction> {
+  async createAccountTransaction(
+    input: AccountTransaction,
+    conn: DrizzleConnection = db,
+  ): Promise<AccountTransaction> {
     try {
       const { meta, ...transaction } = input;
 
       return conn.transaction(async (tx) => {
-        const [createdTransaction] = await tx.insert(accountTransactions).values(transaction).returning();
+        const [createdTransaction] = await tx
+          .insert(accountTransactions)
+          .values(transaction)
+          .returning();
 
         if (meta.length > 0) {
-          const createdTransationMeta = await tx.insert(accountTransactionMeta).values(meta).returning();
+          const createdTransationMeta = await tx
+            .insert(accountTransactionMeta)
+            .values(meta)
+            .returning();
 
           if (createdTransaction && createdTransationMeta.length > 0) {
             return {
@@ -99,7 +125,7 @@ export class AccountsRepository implements IAccountsRepository {
   }
   async getAccountTransactionById(
     transactionId: string,
-    conn: DrizzleConnection = db
+    conn: DrizzleConnection = db,
   ): Promise<AccountTransaction | undefined> {
     try {
       const transaction = await conn.query.accountTransactions.findFirst({
@@ -116,12 +142,16 @@ export class AccountsRepository implements IAccountsRepository {
   }
   async getLatestSettledAccountTransaction(
     accountId: string,
-    conn: DrizzleConnection = db
+    conn: DrizzleConnection = db,
   ): Promise<AccountTransaction | undefined> {
     try {
       const transaction = await conn.query.accountTransactions.findFirst({
         where: (t, { and, eq, isNotNull }) =>
-          and(eq(t.accountId, accountId), isNotNull(t.balance), isNotNull(t.settledDate)),
+          and(
+            eq(t.accountId, accountId),
+            isNotNull(t.balance),
+            isNotNull(t.settledDate),
+          ),
         orderBy: (t, { desc }) => desc(t.settledDate),
         with: {
           meta: true,
@@ -135,11 +165,16 @@ export class AccountsRepository implements IAccountsRepository {
   }
   async getUnsettledAccountTransactions(
     accountId: string,
-    conn: DrizzleConnection = db
+    conn: DrizzleConnection = db,
   ): Promise<AccountTransaction[]> {
     try {
       const transations = conn.query.accountTransactions.findMany({
-        where: (t, { and, eq, isNull }) => and(eq(t.accountId, accountId), isNull(t.balance), isNull(t.settledDate)),
+        where: (t, { and, eq, isNull }) =>
+          and(
+            eq(t.accountId, accountId),
+            isNull(t.balance),
+            isNull(t.settledDate),
+          ),
         orderBy: (t, { desc }) => desc(t.creationDate),
         with: {
           meta: true,
@@ -151,7 +186,10 @@ export class AccountsRepository implements IAccountsRepository {
       throw err; // TODO: convert to Entities error
     }
   }
-  async getAccountTransactions(accountId: string, conn: DrizzleConnection = db): Promise<AccountTransaction[]> {
+  async getAccountTransactions(
+    accountId: string,
+    conn: DrizzleConnection = db,
+  ): Promise<AccountTransaction[]> {
     try {
       const transations = await conn.query.accountTransactions.findMany({
         where: (t, { eq }) => eq(t.accountId, accountId),
@@ -169,7 +207,7 @@ export class AccountsRepository implements IAccountsRepository {
   async updateAccountTransactionById(
     transactionId: string,
     input: Partial<AccountTransaction>,
-    conn: DrizzleConnection = db
+    conn: DrizzleConnection = db,
   ): Promise<AccountTransaction | undefined> {
     try {
       const { meta, ...transation } = input;

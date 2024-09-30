@@ -1,6 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { getInjection } from "../../../di/container.js";
 import { Account } from "../../../entities/models/account.js";
+import { add } from "date-fns";
 
 export async function getAccountUseCase(input: {
   userId: string;
@@ -8,6 +9,7 @@ export async function getAccountUseCase(input: {
   (Account & { availableBalance: string; pendingBalance: string }) | undefined
 > {
   const accountsRepository = getInjection("IAccountsRepository");
+  const accountingService = getInjection("IAccountingService");
 
   const account = await accountsRepository.getAccountByUserId(input.userId);
   if (!account) {

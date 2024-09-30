@@ -4,7 +4,7 @@ const project = resolve(process.cwd(), "tsconfig.json");
 
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
+  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier", "airbnb"],
   plugins: ["only-warn", "@typescript-eslint"],
   rules: {
     "@typescript-eslint/consistent-type-imports": "error",

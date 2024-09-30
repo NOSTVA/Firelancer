@@ -1,7 +1,14 @@
 import { getSession } from "@/lib/auth";
 import { accounting } from "@firelancer/modules/controllers";
 import { redirect } from "next/navigation";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default async function Page() {
   const { user } = await getSession();
@@ -43,7 +50,9 @@ export default async function Page() {
               <TableRow>
                 <TableHead>Date</TableHead>
                 <TableHead>Ref-ID</TableHead>
-                <TableHead>Amount</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Credit</TableHead>
+                <TableHead>Debit</TableHead>
                 <TableHead>Balance</TableHead>
               </TableRow>
             </TableHeader>
@@ -52,8 +61,12 @@ export default async function Page() {
                 <TableRow className="bg-accent" key={entry.id}>
                   <TableCell>{entry.creationDate.toISOString()}</TableCell>
                   <TableCell>{entry.id}</TableCell>
-                  <TableCell>{entry.credit ? <span>{entry.credit}$</span> : <span>({entry.debit}$)</span>}</TableCell>
-                  <TableCell className="italic text-muted-foreground">Pending</TableCell>
+                  <TableCell>{entry.type}</TableCell>
+                  <TableCell>{entry.credit}$</TableCell>
+                  <TableCell>{entry.debit}$</TableCell>
+                  <TableCell className="italic text-muted-foreground">
+                    Pending
+                  </TableCell>
                 </TableRow>
               ))}
 
@@ -61,7 +74,9 @@ export default async function Page() {
                 <TableRow key={entry.id}>
                   <TableCell>{entry.creationDate.toISOString()}</TableCell>
                   <TableCell>{entry.id}</TableCell>
-                  <TableCell>{entry.credit ? <span>{entry.credit}$</span> : <span>({entry.debit}$)</span>}</TableCell>
+                  <TableCell>{entry.type}</TableCell>
+                  <TableCell>{entry.credit}$</TableCell>
+                  <TableCell>{entry.debit}$</TableCell>
                   <TableCell>{entry.balance}$</TableCell>
                 </TableRow>
               ))}
