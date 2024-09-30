@@ -1,20 +1,13 @@
-import { Transaction } from "../../entities/models/transaction.js";
-import { TransactionScope } from "../repositories/transaction.interface.js";
+import { AccountTransaction, AccountTransactionType } from "../../entities/models/account-transaction.js";
 
 export interface IAccountingService {
-  initializeTransaction(details: {
-    sender?: {
-      accountId: string;
-    };
-    recipient?: {
-      accountId: string;
-    };
-    amount: string;
-    dueDate?: Date;
-    orderId?: string;
-  }): Promise<Transaction>;
-  settleAccountBalance(
-    balanceEntryId: string,
-    tx?: TransactionScope,
-  ): Promise<void>;
+  initializeAccountTransaction(details: {
+    userId: string;
+    type: AccountTransactionType;
+    credit: string;
+    debit: string;
+    reviewDueDate?: Date;
+    meta?: Record<string, string>;
+  }): Promise<AccountTransaction>;
+  settleAccountTransaction(transactionId: string): Promise<void>;
 }

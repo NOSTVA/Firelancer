@@ -10,6 +10,12 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."account_transaction_type" AS ENUM('FIXED-PRICE', 'BONUS', 'PAYMENT', 'WITHDRAWAL');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" text PRIMARY KEY NOT NULL,
 	"username" text NOT NULL,
@@ -46,28 +52,26 @@ CREATE TABLE IF NOT EXISTS "accounts" (
 	"creation_date" timestamp NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "balances" (
+CREATE TABLE IF NOT EXISTS "account_transactions" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"account_id" uuid NOT NULL,
-	"creation_date" timestamp NOT NULL,
-	"due_date" timestamp,
-	"settled_date" timestamp,
+	"type" "account_transaction_type" NOT NULL,
 	"balance" numeric,
 	"credit" numeric NOT NULL,
 	"debit" numeric NOT NULL,
-	"prev_settled_date" timestamp,
+	"creation_date" timestamp NOT NULL,
+	"review_due_date" timestamp,
+	"settled_date" timestamp,
 	"prev_balance" numeric,
-	"related_balance_entry_id" uuid,
+	"prev_settled_date" timestamp,
 	"related_transaction_id" uuid
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "transactions" (
+CREATE TABLE IF NOT EXISTS "account_transaction_meta" (
 	"id" uuid PRIMARY KEY NOT NULL,
-	"sender_account_id" uuid,
-	"recipient_account_id" uuid,
-	"amount" numeric NOT NULL,
-	"creation_date" timestamp NOT NULL,
-	"order_id" uuid
+	"account_transaction_id" uuid NOT NULL,
+	"meta_key" text NOT NULL,
+	"meta_value" text NOT NULL
 );
 --> statement-breakpoint
 DO $$ BEGIN
@@ -95,31 +99,19 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "balances" ADD CONSTRAINT "balances_account_id_accounts_id_fk" FOREIGN KEY ("account_id") REFERENCES "public"."accounts"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "account_transactions" ADD CONSTRAINT "account_transactions_account_id_accounts_id_fk" FOREIGN KEY ("account_id") REFERENCES "public"."accounts"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "balances" ADD CONSTRAINT "balances_related_transaction_id_transactions_id_fk" FOREIGN KEY ("related_transaction_id") REFERENCES "public"."transactions"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "account_transactions" ADD CONSTRAINT "related_transaction_idx" FOREIGN KEY ("related_transaction_id") REFERENCES "public"."account_transactions"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "balances" ADD CONSTRAINT "related_balance_entry_idx" FOREIGN KEY ("related_balance_entry_id") REFERENCES "public"."balances"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "transactions" ADD CONSTRAINT "transactions_sender_account_id_accounts_id_fk" FOREIGN KEY ("sender_account_id") REFERENCES "public"."accounts"("id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "transactions" ADD CONSTRAINT "transactions_recipient_account_id_accounts_id_fk" FOREIGN KEY ("recipient_account_id") REFERENCES "public"."accounts"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "account_transaction_meta" ADD CONSTRAINT "account_transaction_meta_account_transaction_id_account_transactions_id_fk" FOREIGN KEY ("account_transaction_id") REFERENCES "public"."account_transactions"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

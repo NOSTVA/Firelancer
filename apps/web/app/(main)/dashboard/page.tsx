@@ -1,6 +1,7 @@
 import { getSession } from "@/lib/auth";
 import { accounting } from "@firelancer/modules/controllers";
 import { redirect } from "next/navigation";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export default async function Page() {
   const { user } = await getSession();
@@ -10,6 +11,9 @@ export default async function Page() {
   }
 
   const account = await accounting.getAccount({ userId: user.id });
+  const transactionsHistory = await accounting.getTransactionHistory({
+    userId: user.id,
+  });
 
   return (
     <>
@@ -33,6 +37,36 @@ export default async function Page() {
               </div>
             </div>
           </div>
+
+          <Table className="mt-10 border">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Date</TableHead>
+                <TableHead>Ref-ID</TableHead>
+                <TableHead>Amount</TableHead>
+                <TableHead>Balance</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {transactionsHistory.pendingTransactions.map((entry) => (
+                <TableRow className="bg-accent" key={entry.id}>
+                  <TableCell>{entry.creationDate.toISOString()}</TableCell>
+                  <TableCell>{entry.id}</TableCell>
+                  <TableCell>{entry.credit ? <span>{entry.credit}$</span> : <span>({entry.debit}$)</span>}</TableCell>
+                  <TableCell className="italic text-muted-foreground">Pending</TableCell>
+                </TableRow>
+              ))}
+
+              {transactionsHistory.settledTransactions.map((entry) => (
+                <TableRow key={entry.id}>
+                  <TableCell>{entry.creationDate.toISOString()}</TableCell>
+                  <TableCell>{entry.id}</TableCell>
+                  <TableCell>{entry.credit ? <span>{entry.credit}$</span> : <span>({entry.debit}$)</span>}</TableCell>
+                  <TableCell>{entry.balance}$</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
     </>

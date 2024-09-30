@@ -2,8 +2,8 @@ import { relations } from "drizzle-orm";
 import { users } from "../tables/users.js";
 import { oauthAccounts } from "../tables/oauthAccounts.js";
 import { accounts } from "../tables/accounts.js";
-import { balances } from "../tables/balances.js";
-import { transactions } from "../tables/transactions.js";
+import { accountTransactions } from "../tables/account-transactions.js";
+import { accountTransactionMeta } from "../tables/account-transaction-meta.js";
 
 export const _user = relations(users, ({ many }) => ({
   oauth_accounts: many(oauthAccounts),
@@ -22,31 +22,30 @@ export const _account = relations(accounts, ({ many, one }) => ({
     fields: [accounts.userId],
     references: [users.id],
   }),
-  balances: many(balances),
+  transactions: many(accountTransactions),
 }));
 
-export const _accountBalance = relations(balances, ({ one }) => ({
-  account: one(accounts, {
-    fields: [balances.accountId],
-    references: [accounts.id],
+export const _accountTransactions = relations(
+  accountTransactions,
+  ({ one, many }) => ({
+    account: one(accounts, {
+      fields: [accountTransactions.accountId],
+      references: [accounts.id],
+    }),
+    relatedTransaction: one(accountTransactions, {
+      fields: [accountTransactions.relatedTransactionId],
+      references: [accountTransactions.id],
+    }),
+    meta: many(accountTransactionMeta),
   }),
-  relatedBalanceEntry: one(balances, {
-    fields: [balances.relatedBalanceEntryId],
-    references: [balances.id],
-  }),
-  relatedTransaction: one(transactions, {
-    fields: [balances.relatedTransactionId],
-    references: [transactions.id],
-  }),
-}));
+);
 
-export const _invoices = relations(transactions, ({ one }) => ({
-  sender: one(accounts, {
-    fields: [transactions.senderAccountId],
-    references: [accounts.id],
+export const _accountTransactionMeta = relations(
+  accountTransactionMeta,
+  ({ one, many }) => ({
+    transaction: one(accountTransactions, {
+      fields: [accountTransactionMeta.accountTransactionId],
+      references: [accountTransactions.id],
+    }),
   }),
-  recipient: one(accounts, {
-    fields: [transactions.recipientAccountId],
-    references: [accounts.id],
-  }),
-}));
+);

@@ -1,5 +1,5 @@
 {
-  "id": "79b5c4b7-c27f-4711-9d07-55c8960ebe39",
+  "id": "6c34a1b6-3342-4f5d-a688-0ad5707ddc8e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -242,8 +242,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.balances": {
-      "name": "balances",
+    "public.account_transactions": {
+      "name": "account_transactions",
       "schema": "",
       "columns": {
         "id": {
@@ -258,23 +258,12 @@
           "primaryKey": false,
           "notNull": true
         },
-        "creation_date": {
-          "name": "creation_date",
-          "type": "timestamp",
+        "type": {
+          "name": "type",
+          "type": "account_transaction_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
-        },
-        "due_date": {
-          "name": "due_date",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "settled_date": {
-          "name": "settled_date",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
         },
         "balance": {
           "name": "balance",
@@ -294,8 +283,20 @@
           "primaryKey": false,
           "notNull": true
         },
-        "prev_settled_date": {
-          "name": "prev_settled_date",
+        "creation_date": {
+          "name": "creation_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "review_due_date": {
+          "name": "review_due_date",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "settled_date": {
+          "name": "settled_date",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false
@@ -306,9 +307,9 @@
           "primaryKey": false,
           "notNull": false
         },
-        "related_balance_entry_id": {
-          "name": "related_balance_entry_id",
-          "type": "uuid",
+        "prev_settled_date": {
+          "name": "prev_settled_date",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
@@ -321,9 +322,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "balances_account_id_accounts_id_fk": {
-          "name": "balances_account_id_accounts_id_fk",
-          "tableFrom": "balances",
+        "account_transactions_account_id_accounts_id_fk": {
+          "name": "account_transactions_account_id_accounts_id_fk",
+          "tableFrom": "account_transactions",
           "tableTo": "accounts",
           "columnsFrom": [
             "account_id"
@@ -334,25 +335,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "balances_related_transaction_id_transactions_id_fk": {
-          "name": "balances_related_transaction_id_transactions_id_fk",
-          "tableFrom": "balances",
-          "tableTo": "transactions",
+        "related_transaction_idx": {
+          "name": "related_transaction_idx",
+          "tableFrom": "account_transactions",
+          "tableTo": "account_transactions",
           "columnsFrom": [
             "related_transaction_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "related_balance_entry_idx": {
-          "name": "related_balance_entry_idx",
-          "tableFrom": "balances",
-          "tableTo": "balances",
-          "columnsFrom": [
-            "related_balance_entry_id"
           ],
           "columnsTo": [
             "id"
@@ -364,8 +352,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.transactions": {
-      "name": "transactions",
+    "public.account_transaction_meta": {
+      "name": "account_transaction_meta",
       "schema": "",
       "columns": {
         "id": {
@@ -374,58 +362,33 @@
           "primaryKey": true,
           "notNull": true
         },
-        "sender_account_id": {
-          "name": "sender_account_id",
+        "account_transaction_id": {
+          "name": "account_transaction_id",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "recipient_account_id": {
-          "name": "recipient_account_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "amount": {
-          "name": "amount",
-          "type": "numeric",
           "primaryKey": false,
           "notNull": true
         },
-        "creation_date": {
-          "name": "creation_date",
-          "type": "timestamp",
+        "meta_key": {
+          "name": "meta_key",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "order_id": {
-          "name": "order_id",
-          "type": "uuid",
+        "meta_value": {
+          "name": "meta_value",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "transactions_sender_account_id_accounts_id_fk": {
-          "name": "transactions_sender_account_id_accounts_id_fk",
-          "tableFrom": "transactions",
-          "tableTo": "accounts",
+        "account_transaction_meta_account_transaction_id_account_transactions_id_fk": {
+          "name": "account_transaction_meta_account_transaction_id_account_transactions_id_fk",
+          "tableFrom": "account_transaction_meta",
+          "tableTo": "account_transactions",
           "columnsFrom": [
-            "sender_account_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "transactions_recipient_account_id_accounts_id_fk": {
-          "name": "transactions_recipient_account_id_accounts_id_fk",
-          "tableFrom": "transactions",
-          "tableTo": "accounts",
-          "columnsFrom": [
-            "recipient_account_id"
+            "account_transaction_id"
           ],
           "columnsTo": [
             "id"
@@ -452,6 +415,16 @@
       "values": [
         "OPEN",
         "CLOSED"
+      ]
+    },
+    "public.account_transaction_type": {
+      "name": "account_transaction_type",
+      "schema": "public",
+      "values": [
+        "FIXED-PRICE",
+        "BONUS",
+        "PAYMENT",
+        "WITHDRAWAL"
       ]
     }
   },

@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-export const oauthProviderSchema = z.enum(["github"]);
+export const OAUTH_PROVIDERS = ["github"] as const;
+
+export const oauthProviderSchema = z.enum(OAUTH_PROVIDERS);
 
 export const oauthAccountSchema = z.object({
   providerId: oauthProviderSchema,

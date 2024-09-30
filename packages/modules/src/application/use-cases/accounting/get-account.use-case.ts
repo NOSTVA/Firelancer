@@ -9,21 +9,20 @@ export async function getAccountUseCase(input: {
 > {
   const accountsRepository = getInjection("IAccountsRepository");
 
-  const existingAccount = await accountsRepository.getAccountByUserId(
-    input.userId,
-  );
-
-  if (!existingAccount) {
-    return undefined;
+  const account = await accountsRepository.getAccountByUserId(input.userId);
+  if (!account) {
+    throw new Error(
+      "User does not have balance account. please contact support",
+    );
   }
 
-  const settledBalanceEntry =
-    await accountsRepository.getLatestSettledBalanceEntry(existingAccount.id);
-  const unsettledBalanceEntries =
-    await accountsRepository.getUnsettledBalanceEntries(existingAccount.id);
+  const settledBalanceTransaction =
+    await accountsRepository.getLatestSettledAccountTransaction(account.id);
+  const unsettledBalanceTransactions =
+    await accountsRepository.getUnsettledAccountTransactions(account.id);
 
-  const availableBalance = settledBalanceEntry?.balance ?? "0";
-  const pendingBalance = unsettledBalanceEntries.reduce<string>(
+  const availableBalance = settledBalanceTransaction?.balance ?? "0";
+  const pendingBalance = unsettledBalanceTransactions.reduce<string>(
     (acc, { credit, debit }) => {
       return new BigNumber(acc).plus(credit).minus(debit).toString();
     },
@@ -31,7 +30,7 @@ export async function getAccountUseCase(input: {
   );
 
   return {
-    ...existingAccount,
+    ...account,
     availableBalance,
     pendingBalance,
   };

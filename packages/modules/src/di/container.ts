@@ -7,7 +7,6 @@ import {
   MailerServiceModule,
   OAuthRepositoryModule,
   TransactionModule,
-  TransactionsRepositoryModule,
   UsersRepositoryModule,
 } from "./modules.js";
 import type { DI_RETURN_TYPES } from "./types.js";
@@ -28,7 +27,6 @@ export const initializeContainer = () => {
     ApplicationContainer.load(MailerServiceModule);
     ApplicationContainer.load(EmailVerificationCodesRepositoryModule);
     ApplicationContainer.load(AccountsRepositoryModule);
-    ApplicationContainer.load(TransactionsRepositoryModule);
     CONTAINER_INIT = true;
   }
 };
@@ -43,7 +41,6 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(MailerServiceModule);
     ApplicationContainer.unload(EmailVerificationCodesRepositoryModule);
     ApplicationContainer.unload(AccountsRepositoryModule);
-    ApplicationContainer.unload(TransactionsRepositoryModule);
     CONTAINER_INIT = false;
   }
 };

@@ -8,6 +8,7 @@ import { verifyEmailVerificationCodeController } from "./interface-adapters/cont
 import { signInGithubController } from "./interface-adapters/controllers/auth/github/sign-in.controller.js";
 import { signInGithubCallbackController } from "./interface-adapters/controllers/auth/github/sign-in-callback.controller.js";
 import { getAccountController } from "./interface-adapters/controllers/accounting/get-account.controller.js";
+import { getTransactionHistoryController } from "./interface-adapters/controllers/accounting/get-transactions-history.controller.js";
 
 const auth = {
   authenticateUser: authenticateUserController,
@@ -24,6 +25,7 @@ const auth = {
 
 const accounting = {
   getAccount: getAccountController,
+  getTransactionHistory: getTransactionHistoryController,
 };
 
 export { auth, accounting };

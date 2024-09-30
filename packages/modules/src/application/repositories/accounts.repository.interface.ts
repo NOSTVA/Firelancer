@@ -1,19 +1,15 @@
 import { Account } from "../../entities/models/account.js";
-import { BalanceEntry } from "../../entities/models/balance.js";
+import { AccountTransaction } from "../../entities/models/account-transaction.js";
 import { TransactionScope } from "./transaction.interface.js";
 
 export interface IAccountsRepository {
   createAccount(input: Account, tx?: TransactionScope): Promise<Account>;
-  getAccountsByUserId(
-    userId: string,
-    tx?: TransactionScope,
-  ): Promise<Account[]>;
-  getAccountByUserId(
-    userId: string,
-    tx?: TransactionScope,
-  ): Promise<Account | undefined>;
   getAccountById(
     accountId: string,
+    tx?: TransactionScope,
+  ): Promise<Account | undefined>;
+  getAccountByUserId(
+    userId: string,
     tx?: TransactionScope,
   ): Promise<Account | undefined>;
   updateAccountById(
@@ -21,29 +17,29 @@ export interface IAccountsRepository {
     input: Partial<Account>,
     tx?: TransactionScope,
   ): Promise<Account | undefined>;
-  createBalanceEntry(
-    input: BalanceEntry,
+  createAccountTransaction(
+    input: AccountTransaction,
     tx?: TransactionScope,
-  ): Promise<BalanceEntry>;
-  getBalanceEntryById(
+  ): Promise<AccountTransaction>;
+  getAccountTransactionById(
     entryId: string,
     tx?: TransactionScope,
-  ): Promise<BalanceEntry | undefined>;
-  getLatestSettledBalanceEntry(
+  ): Promise<AccountTransaction | undefined>;
+  getLatestSettledAccountTransaction(
     accountId: string,
     tx?: TransactionScope,
-  ): Promise<BalanceEntry | undefined>;
-  getUnsettledBalanceEntries(
+  ): Promise<AccountTransaction | undefined>;
+  getUnsettledAccountTransactions(
     accountId: string,
     tx?: TransactionScope,
-  ): Promise<BalanceEntry[]>;
-  getBalanceEntries(
+  ): Promise<AccountTransaction[]>;
+  getAccountTransactions(
     accountId: string,
     tx?: TransactionScope,
-  ): Promise<BalanceEntry[]>;
-  updateBalanceEntryById(
-    entryId: string,
-    input: Partial<BalanceEntry>,
+  ): Promise<AccountTransaction[]>;
+  updateAccountTransactionById(
+    transactionId: string,
+    input: Partial<AccountTransaction>,
     tx?: TransactionScope,
-  ): Promise<BalanceEntry | undefined>;
+  ): Promise<AccountTransaction | undefined>;
 }
