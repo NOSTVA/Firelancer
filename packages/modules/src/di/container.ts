@@ -7,14 +7,14 @@ import {
   MailerServiceModule,
   OAuthRepositoryModule,
   TransactionModule,
-  UsersRepositoryModule,
+  UsersRepositoryModule
 } from "./modules.js";
 import type { DI_RETURN_TYPES } from "./types.js";
 import { DI_SYMBOLS } from "./types.js";
 
 let CONTAINER_INIT = false;
 const ApplicationContainer = new Container({
-  defaultScope: "Singleton",
+  defaultScope: "Singleton"
 });
 
 export const initializeContainer = () => {
@@ -48,7 +48,7 @@ export const destroyContainer = () => {
 initializeContainer();
 
 export function getInjection<K extends keyof typeof DI_SYMBOLS>(
-  symbol: K,
+  symbol: K
 ): DI_RETURN_TYPES[K] {
   return ApplicationContainer.get(DI_SYMBOLS[symbol]);
 }

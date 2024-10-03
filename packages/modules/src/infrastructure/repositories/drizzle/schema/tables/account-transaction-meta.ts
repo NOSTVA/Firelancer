@@ -7,5 +7,5 @@ export const accountTransactionMeta = pgTable("account_transaction_meta", {
     .references(() => accountTransactions.id)
     .notNull(),
   metaKey: text("meta_key").notNull(),
-  metaValue: text("meta_value").notNull(),
+  metaValue: text("meta_value").notNull()
 });

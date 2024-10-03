@@ -19,15 +19,15 @@ export async function signInCallbackUseCase(input: {
   const tokens = await github.validateAuthorizationCode(input.code);
   const githubUserResponse = await fetch("https://api.github.com/user", {
     headers: {
-      Authorization: `Bearer ${tokens.accessToken}`,
-    },
+      Authorization: `Bearer ${tokens.accessToken}`
+    }
   });
 
   const githubUser: GitHubUser = await githubUserResponse.json();
 
   const existingUser = await usersRepository.getUserByOAuthProvider(
     "github",
-    githubUser.id,
+    githubUser.id
   );
 
   // login existing user
@@ -43,9 +43,9 @@ export async function signInCallbackUseCase(input: {
         email: null,
         emailVerified: false,
         username: githubUser.login,
-        hashedPassword: null,
+        hashedPassword: null
       },
-      tx,
+      tx
     );
 
     await accountsRepository.createAccount(
@@ -53,18 +53,18 @@ export async function signInCallbackUseCase(input: {
         id: randomUUID(),
         userId: user.id,
         status: "OPEN",
-        creationDate: new Date(),
+        creationDate: new Date()
       },
-      tx,
+      tx
     );
 
     await oauthRepository.createAccount(
       {
         providerId: "github",
         providerUserId: githubUser.id,
-        userId: user.id,
+        userId: user.id
       },
-      tx,
+      tx
     );
 
     return user;

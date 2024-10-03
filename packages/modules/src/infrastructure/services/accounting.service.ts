@@ -8,7 +8,7 @@ import { getInjection } from "../../di/container.js";
 import type { IAccountsRepository } from "../../application/repositories/accounts.repository.interface.js";
 import {
   AccountTransaction,
-  AccountTransactionType,
+  AccountTransactionType
 } from "../../entities/models/account-transaction.js";
 import { TransactionScope } from "../../application/repositories/transaction.interface.js";
 
@@ -16,7 +16,7 @@ import { TransactionScope } from "../../application/repositories/transaction.int
 export class AccountingService implements IAccountingService {
   constructor(
     @inject(DI_SYMBOLS.IAccountsRepository)
-    private _accountsRepository: IAccountsRepository,
+    private _accountsRepository: IAccountsRepository
   ) {}
 
   async initializeAccountTransaction(details: {
@@ -32,19 +32,28 @@ export class AccountingService implements IAccountingService {
     const createdTransaction = await transaction.create(async (tx) => {
       const account = await this._accountsRepository.getAccountByUserId(
         details.userId,
-        tx,
+        tx
       );
 
       if (!account) {
         throw new Error(
-          "user does not have a valid account. please contact devs",
+          "user does not have a valid account. please contact devs"
         );
       }
 
-      // perform some accounts constraints checking
+      // perform some constraints checking
       // ...
 
       const transactionId = randomUUID();
+      const transactionMeta = Object.entries(details.meta || {}).map(
+        ([key, value]) => ({
+          id: randomUUID(),
+          accountTransactionId: transactionId,
+          metaKey: key,
+          metaValue: value
+        })
+      );
+
       const createdTransaction =
         await this._accountsRepository.createAccountTransaction(
           {
@@ -60,14 +69,9 @@ export class AccountingService implements IAccountingService {
             balance: null,
             prevBalance: null,
             prevSettledDate: null,
-            meta: Object.entries(details.meta || {}).map(([key, value]) => ({
-              id: randomUUID(),
-              accountTransactionId: transactionId,
-              metaKey: key,
-              metaValue: value,
-            })),
+            meta: transactionMeta
           },
-          tx,
+          tx
         );
 
       // immediatly settle the transaction of has no review due date
@@ -80,20 +84,19 @@ export class AccountingService implements IAccountingService {
 
     return createdTransaction;
   }
-
   async settleAccountTransaction(
     transactionId: string,
-    tx: TransactionScope,
+    tx: TransactionScope
   ): Promise<void> {
     const transaction =
       await this._accountsRepository.getAccountTransactionById(
         transactionId,
-        tx,
+        tx
       );
 
     if (!transaction) {
       throw new Error(
-        "Account transaction settlement: transaction does not exist",
+        "Account transaction settlement: transaction does not exist"
       );
     }
 
@@ -104,13 +107,13 @@ export class AccountingService implements IAccountingService {
 
     if (isSettled) {
       throw new Error(
-        "Account transaction settlement: transaction already settled",
+        "Account transaction settlement: transaction already settled"
       );
     }
 
     if (!isSettleable) {
       throw new Error(
-        "Account transaction settlement: transaction cannot be settled at the moment",
+        "Account transaction settlement: transaction cannot be settled at the moment"
       );
     }
 
@@ -119,48 +122,48 @@ export class AccountingService implements IAccountingService {
     const latestSettledtransaction =
       await this._accountsRepository.getLatestSettledAccountTransaction(
         transaction.accountId,
-        tx,
+        tx
       );
 
     const prevSettledDate = latestSettledtransaction?.settledDate ?? null;
-    const prevBalance = new BigNumber(latestSettledtransaction?.balance ?? "0");
+    const prevBalance = new BigNumber(latestSettledtransaction?.balance ?? 0);
     const credit = new BigNumber(transaction.credit);
     const debit = new BigNumber(transaction.debit);
     const balance = new BigNumber(prevBalance ?? "0").plus(credit).minus(debit);
 
     if (debit.isLessThan(0) || credit.isLessThan(0)) {
       throw new Error(
-        "Account transaction settlement: debits and credits cannot be negative values.",
+        "Account transaction settlement: debits and credits cannot be negative values."
       );
     }
 
     if (debit.isEqualTo(0) && credit.isEqualTo(0)) {
       throw new Error(
-        "Account transaction settlement: debits and credits both cannot be 0",
+        "Account transaction settlement: debits and credits both cannot be 0"
       );
     }
 
     if (balance.isLessThan(0)) {
       throw new Error(
-        "Account transaction settlement: balance caanot be negative.",
+        "Account transaction settlement: balance caanot be negative."
       );
     }
 
-    const settledEntry =
+    const settledTransaction =
       await this._accountsRepository.updateAccountTransactionById(
         transaction.id,
         {
           prevBalance: prevBalance.toString(),
           prevSettledDate: prevSettledDate,
           balance: balance.toString(),
-          settledDate: new Date(),
+          settledDate: new Date()
         },
-        tx,
+        tx
       );
 
-    if (!settledEntry) {
+    if (!settledTransaction) {
       throw new Error(
-        "Account transaction settlement: could not settle balance entry please try again",
+        "Account transaction settlement: could not settle balance entry please try again"
       );
     }
   }

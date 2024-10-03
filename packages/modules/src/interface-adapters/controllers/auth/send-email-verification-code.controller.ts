@@ -4,7 +4,7 @@ import { sendEmailVerificationCodeUseCase } from "../../../application/use-cases
 
 const inputSchema = z.object({
   userId: z.string(),
-  email: z.string(),
+  email: z.string()
 });
 
 export async function sendEmailVerificationCodeController(input: {
@@ -19,6 +19,6 @@ export async function sendEmailVerificationCodeController(input: {
 
   return sendEmailVerificationCodeUseCase({
     email: data.email,
-    userId: data.userId,
+    userId: data.userId
   });
 }

@@ -7,7 +7,7 @@ import * as schema from "../schema/index.js";
 
 const pool = new Pool({
   connectionString: env.POSTGRES_DATABASE_URL,
-  ssl: env.ENV === "production",
+  ssl: env.ENV === "production"
 });
 
 pool.on("connect", () => {
@@ -19,7 +19,7 @@ const db = drizzle(pool, { schema, logger: false });
 const luciaAdapter = new DrizzlePostgreSQLAdapter(
   db,
   schema.sessions,
-  schema.users,
+  schema.users
 );
 
 export { db, luciaAdapter };

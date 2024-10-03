@@ -1,6 +1,6 @@
 import {
   AccountTransaction,
-  AccountTransactionType,
+  AccountTransactionType
 } from "../../entities/models/account-transaction.js";
 import { TransactionScope } from "../repositories/transaction.interface.js";
 
@@ -15,6 +15,6 @@ export interface IAccountingService {
   }): Promise<AccountTransaction>;
   settleAccountTransaction(
     transactionId: string,
-    tx: TransactionScope,
+    tx: TransactionScope
   ): Promise<void>;
 }

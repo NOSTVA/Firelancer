@@ -1,7 +1,6 @@
 import { BigNumber } from "bignumber.js";
 import { getInjection } from "../../../di/container.js";
 import { Account } from "../../../entities/models/account.js";
-import { add } from "date-fns";
 
 export async function getAccountUseCase(input: {
   userId: string;
@@ -9,31 +8,30 @@ export async function getAccountUseCase(input: {
   (Account & { availableBalance: string; pendingBalance: string }) | undefined
 > {
   const accountsRepository = getInjection("IAccountsRepository");
-  const accountingService = getInjection("IAccountingService");
 
   const account = await accountsRepository.getAccountByUserId(input.userId);
   if (!account) {
     throw new Error(
-      "User does not have balance account. please contact support",
+      "User does not have balance account. please contact support"
     );
   }
 
-  const settledBalanceTransaction =
+  const settledTransaction =
     await accountsRepository.getLatestSettledAccountTransaction(account.id);
-  const unsettledBalanceTransactions =
+  const unsettledTransactions =
     await accountsRepository.getUnsettledAccountTransactions(account.id);
 
-  const availableBalance = settledBalanceTransaction?.balance ?? "0";
-  const pendingBalance = unsettledBalanceTransactions.reduce<string>(
+  const availableBalance = settledTransaction?.balance ?? "0";
+  const pendingBalance = unsettledTransactions.reduce<string>(
     (acc, { credit, debit }) => {
       return new BigNumber(acc).plus(credit).minus(debit).toString();
     },
-    "0",
+    "0"
   );
 
   return {
     ...account,
     availableBalance,
-    pendingBalance,
+    pendingBalance
   };
 }

@@ -5,7 +5,7 @@ import { InputParseError } from "../../../entities/errors/common.js";
 const inputSchema = z.object({
   userId: z.string(),
   email: z.string(),
-  code: z.string(),
+  code: z.string()
 });
 
 export async function verifyEmailVerificationCodeController(input: {
@@ -21,6 +21,6 @@ export async function verifyEmailVerificationCodeController(input: {
   return verifyEmailVerificationCodeUseCase({
     userId: data.userId,
     email: data.email,
-    code: data.code,
+    code: data.code
   });
 }

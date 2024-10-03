@@ -8,15 +8,15 @@ export interface IUsersRepository {
   updateUserById(
     userId: string,
     input: Partial<User>,
-    tx?: TransactionScope,
+    tx?: TransactionScope
   ): Promise<User | undefined>;
   getUserByEmail(
     email: string,
-    tx?: TransactionScope,
+    tx?: TransactionScope
   ): Promise<User | undefined>;
   getUserByOAuthProvider(
     providerId: OAuthProvider,
     providerUserId: string,
-    tx?: TransactionScope,
+    tx?: TransactionScope
   ): Promise<User | undefined>;
 }

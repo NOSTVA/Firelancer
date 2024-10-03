@@ -4,7 +4,7 @@ import { auth } from "@firelancer/modules/controllers";
 import { cookies } from "next/headers";
 import {
   AuthenticationError,
-  InputParseError,
+  InputParseError
 } from "@firelancer/modules/errors";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
@@ -17,13 +17,13 @@ export const signOutAction = actionClient.action(async () => {
   } catch (err) {
     if (err instanceof InputParseError || err instanceof AuthenticationError) {
       return {
-        failure: err.message,
+        failure: err.message
       };
     }
 
     return {
       failure:
-        "An error happened. The developers have been notified. Please try again later.",
+        "An error happened. The developers have been notified. Please try again later."
     };
   }
 

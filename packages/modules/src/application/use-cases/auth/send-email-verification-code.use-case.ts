@@ -5,7 +5,7 @@ import env from "../../../env.js";
 
 const mailerService = getInjection("IMailerService");
 const emailVerificationCodeRepository = getInjection(
-  "IEmailVerificationCodesRepository",
+  "IEmailVerificationCodesRepository"
 );
 
 export async function sendEmailVerificationCodeUseCase(input: {
@@ -15,14 +15,14 @@ export async function sendEmailVerificationCodeUseCase(input: {
   const { userId, email } = input;
   const code = await generateEmailVerificationCode({
     userId,
-    email,
+    email
   });
 
   return mailerService.sendMail({
     from: env.MAIL_USERNAME,
     to: email,
     subject: "Email Verification Code",
-    html: `Your verification code is: <b>${code}</b>`,
+    html: `Your verification code is: <b>${code}</b>`
   });
 }
 
@@ -41,6 +41,6 @@ async function generateEmailVerificationCode(input: {
     code,
     email,
     userId,
-    expiresAt,
+    expiresAt
   });
 }

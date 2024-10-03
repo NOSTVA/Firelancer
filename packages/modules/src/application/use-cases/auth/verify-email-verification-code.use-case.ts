@@ -5,7 +5,7 @@ import { UnauthorizedError } from "../../../entities/errors/auth.js";
 const transaction = getInjection("ITransaction");
 const userRepository = getInjection("IUsersRepository");
 const emailVerificationCodeRepository = getInjection(
-  "IEmailVerificationCodesRepository",
+  "IEmailVerificationCodesRepository"
 );
 
 export async function verifyEmailVerificationCodeUseCase(input: {
@@ -17,7 +17,7 @@ export async function verifyEmailVerificationCodeUseCase(input: {
     const verificationCode =
       await emailVerificationCodeRepository.getVerificationCodeByUserId(
         input.userId,
-        tx,
+        tx
       );
 
     if (!verificationCode || verificationCode.code !== input.code) {
@@ -26,7 +26,7 @@ export async function verifyEmailVerificationCodeUseCase(input: {
 
     await emailVerificationCodeRepository.deleteVerificationCode(
       verificationCode.code,
-      tx,
+      tx
     );
 
     if (!isWithinExpirationDate(verificationCode.expiresAt)) {

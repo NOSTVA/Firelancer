@@ -7,7 +7,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from "@/components/ui/table";
 
 export default async function Page() {
@@ -18,21 +18,21 @@ export default async function Page() {
   }
 
   const account = await accounting.getAccount({ userId: user.id });
-  const transactionsHistory = await accounting.getTransactionHistory({
-    userId: user.id,
+  const transactionsHistory = await accounting.getTransactionsHistory({
+    userId: user.id
   });
 
   return (
     <>
-      <div className="container mx-auto px-4 md:px-6 flex flex-col">
-        <div className="my-6">
-          <div className="flex flex-col space-y-4">
+      <div className='container mx-auto px-4 md:px-6 flex flex-col'>
+        <div className='my-6'>
+          <div className='flex flex-col space-y-4'>
             <div>
-              <h1>Hi, {user.username}!</h1>
-              <p>Your ID is {user.id}.</p>
+              <h1>{user.username}!</h1>
+              <p>{user.id}.</p>
             </div>
             <div>
-              <span className="font-bold">Balance Account Details</span>
+              <span className='font-bold'>Account Details</span>
               <div>
                 Status: <span>{account?.status}</span>
               </div>
@@ -45,7 +45,7 @@ export default async function Page() {
             </div>
           </div>
 
-          <Table className="mt-10 border">
+          <Table className='mt-10 border'>
             <TableHeader>
               <TableRow>
                 <TableHead>Date</TableHead>
@@ -58,13 +58,13 @@ export default async function Page() {
             </TableHeader>
             <TableBody>
               {transactionsHistory.pendingTransactions.map((entry) => (
-                <TableRow className="bg-accent" key={entry.id}>
+                <TableRow className='bg-accent' key={entry.id}>
                   <TableCell>{entry.creationDate.toISOString()}</TableCell>
                   <TableCell>{entry.id}</TableCell>
                   <TableCell>{entry.type}</TableCell>
                   <TableCell>{entry.credit}$</TableCell>
                   <TableCell>{entry.debit}$</TableCell>
-                  <TableCell className="italic text-muted-foreground">
+                  <TableCell className='italic text-muted-foreground'>
                     Pending
                   </TableCell>
                 </TableRow>

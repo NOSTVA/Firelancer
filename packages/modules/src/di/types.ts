@@ -18,9 +18,9 @@ export const DI_SYMBOLS = {
   IUsersRepository: Symbol.for("IUsersRepository"),
   IOAuthRepository: Symbol.for("IOAuthRepository"),
   IEmailVerificationCodesRepository: Symbol.for(
-    "IEmailVerificationCodesRepository",
+    "IEmailVerificationCodesRepository"
   ),
-  IAccountsRepository: Symbol.for("IAccountsRepository"),
+  IAccountsRepository: Symbol.for("IAccountsRepository")
 };
 
 export interface DI_RETURN_TYPES {

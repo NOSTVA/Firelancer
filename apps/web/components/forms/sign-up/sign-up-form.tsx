@@ -12,7 +12,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 
 export function SignUpForm() {
@@ -22,25 +22,25 @@ export function SignUpForm() {
     {
       actionProps: {},
       formProps: {},
-      errorMapProps: {},
-    },
+      errorMapProps: {}
+    }
   );
 
   return (
     <div className={"grid gap-6"}>
       <Form {...form}>
         <form onSubmit={handleSubmitWithAction}>
-          <div className="grid gap-2">
+          <div className='grid gap-2'>
             <FormField
               control={form.control}
-              name="username"
+              name='username'
               render={({ field }) => (
-                <FormItem className="grid gap-1">
-                  <FormLabel htmlFor="username" className="sr-only">
+                <FormItem className='grid gap-1'>
+                  <FormLabel htmlFor='username' className='sr-only'>
                     Username
                   </FormLabel>
                   <FormControl>
-                    <Input {...field} id="username" placeholder="Username" />
+                    <Input {...field} id='username' placeholder='Username' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -49,21 +49,21 @@ export function SignUpForm() {
 
             <FormField
               control={form.control}
-              name="email"
+              name='email'
               render={({ field }) => (
-                <FormItem className="grid gap-1">
-                  <FormLabel htmlFor="email" className="sr-only">
+                <FormItem className='grid gap-1'>
+                  <FormLabel htmlFor='email' className='sr-only'>
                     Email
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      id="email"
-                      placeholder="Email"
-                      type="email"
-                      autoCapitalize="none"
-                      autoComplete="email"
-                      autoCorrect="off"
+                      id='email'
+                      placeholder='Email'
+                      type='email'
+                      autoCapitalize='none'
+                      autoComplete='email'
+                      autoCorrect='off'
                     />
                   </FormControl>
                   <FormMessage />
@@ -73,18 +73,18 @@ export function SignUpForm() {
 
             <FormField
               control={form.control}
-              name="password"
+              name='password'
               render={({ field }) => (
-                <FormItem className="grid gap-1">
-                  <FormLabel htmlFor="password" className="sr-only">
+                <FormItem className='grid gap-1'>
+                  <FormLabel htmlFor='password' className='sr-only'>
                     Password
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      id="password"
-                      placeholder="Password"
-                      type="password"
+                      id='password'
+                      placeholder='Password'
+                      type='password'
                     />
                   </FormControl>
                   <FormMessage />
@@ -94,18 +94,18 @@ export function SignUpForm() {
 
             <FormField
               control={form.control}
-              name="confirm_password"
+              name='confirm_password'
               render={({ field }) => (
-                <FormItem className="grid gap-1">
-                  <FormLabel htmlFor="confirm_password" className="sr-only">
+                <FormItem className='grid gap-1'>
+                  <FormLabel htmlFor='confirm_password' className='sr-only'>
                     Confirm Password
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      id="confirm_password"
-                      placeholder="Confirm Password"
-                      type="password"
+                      id='confirm_password'
+                      placeholder='Confirm Password'
+                      type='password'
                     />
                   </FormControl>
                   <FormMessage />
@@ -118,7 +118,7 @@ export function SignUpForm() {
 
             <Button disabled={action.isExecuting}>
               {action.isExecuting && (
-                <Icons.spinner className="mr-2 animate-spin h-4 w-4" />
+                <Icons.spinner className='mr-2 animate-spin h-4 w-4' />
               )}
               Join Firelancer
             </Button>

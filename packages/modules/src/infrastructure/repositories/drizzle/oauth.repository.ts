@@ -10,7 +10,7 @@ import { db } from "./db/index.js";
 export class OAuthRepository implements IOAuthRepository {
   async createAccount(
     input: OAuthAccount,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<OAuthAccount> {
     try {
       const query = conn.insert(oauthAccounts).values(input).returning();

@@ -1,7 +1,7 @@
 import type { PgTransaction } from "drizzle-orm/pg-core";
 import type {
   ITransaction,
-  TransactionScope,
+  TransactionScope
 } from "../../../application/repositories/transaction.interface.js";
 import type { PostgresJsQueryResultHKT } from "drizzle-orm/postgres-js";
 import * as schema from "./schema/index.js";
@@ -20,7 +20,7 @@ export type DrizzleConnection = DrizzleDatabase | DrizzleTransactionScope;
 @injectable()
 export class DrizzleTransaction implements ITransaction {
   async create<T>(
-    transaction: (tx: TransactionScope) => Promise<T>,
+    transaction: (tx: TransactionScope) => Promise<T>
   ): Promise<T> {
     return await db.transaction(transaction);
   }

@@ -5,7 +5,7 @@ export const ACCOUNT_TRANSACTION_TYPES = [
   "FIXED-PRICE",
   "BONUS",
   "PAYMENT",
-  "WITHDRAWAL",
+  "WITHDRAWAL"
 ] as const;
 
 export const accountTransactionSchema = z.object({
@@ -21,7 +21,7 @@ export const accountTransactionSchema = z.object({
   prevBalance: z.string().nullable(),
   prevSettledDate: z.date().nullable(),
   relatedTransactionId: z.string().uuid().nullable(),
-  meta: z.array(accountTransactionMetaSchema),
+  meta: z.array(accountTransactionMetaSchema)
 });
 
 export type AccountTransactionType = (typeof ACCOUNT_TRANSACTION_TYPES)[number];

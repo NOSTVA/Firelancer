@@ -20,55 +20,55 @@ import type { IUsersRepository } from "../application/repositories/users.reposit
 export const MailerServiceModule = new ContainerModule(
   (bind: interfaces.Bind) => {
     bind<IMailerService>(DI_SYMBOLS.IMailerService).to(MailerService);
-  },
+  }
 );
 
 export const AuthenticationServiceModule = new ContainerModule(
   (bind: interfaces.Bind) => {
     bind<IAuthenticationService>(DI_SYMBOLS.IAuthenticationService).to(
-      AuthenticationService,
+      AuthenticationService
     );
-  },
+  }
 );
 
 export const AccountingServiceModule = new ContainerModule(
   (bind: interfaces.Bind) => {
     bind<IAccountingService>(DI_SYMBOLS.IAccountingService).to(
-      AccountingService,
+      AccountingService
     );
-  },
+  }
 );
 
 export const EmailVerificationCodesRepositoryModule = new ContainerModule(
   (bind: interfaces.Bind) => {
     bind<IEmailVerificationCodesRepository>(
-      DI_SYMBOLS.IEmailVerificationCodesRepository,
+      DI_SYMBOLS.IEmailVerificationCodesRepository
     ).to(EmailVerificationCodesRepository);
-  },
+  }
 );
 
 export const OAuthRepositoryModule = new ContainerModule(
   (bind: interfaces.Bind) => {
     bind<IOAuthRepository>(DI_SYMBOLS.IOAuthRepository).to(OAuthRepository);
-  },
+  }
 );
 
 export const TransactionModule = new ContainerModule(
   (bind: interfaces.Bind) => {
     bind<ITransaction>(DI_SYMBOLS.ITransaction).to(DrizzleTransaction);
-  },
+  }
 );
 
 export const UsersRepositoryModule = new ContainerModule(
   (bind: interfaces.Bind) => {
     bind<IUsersRepository>(DI_SYMBOLS.IUsersRepository).to(UsersRepository);
-  },
+  }
 );
 
 export const AccountsRepositoryModule = new ContainerModule(
   (bind: interfaces.Bind) => {
     bind<IAccountsRepository>(DI_SYMBOLS.IAccountsRepository).to(
-      AccountsRepository,
+      AccountsRepository
     );
-  },
+  }
 );

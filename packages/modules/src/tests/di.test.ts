@@ -3,7 +3,7 @@ import "reflect-metadata";
 import {
   destroyContainer,
   getInjection,
-  initializeContainer,
+  initializeContainer
 } from "../di/container.js";
 import { UsersRepository } from "../infrastructure/repositories/drizzle/users.repository.js";
 import { AuthenticationService } from "../infrastructure/services/authentication.service.js";
@@ -25,7 +25,7 @@ it("Testing DI Modules Injection", async () => {
   const mailerService = getInjection("IMailerService");
   const usersRepository = getInjection("IUsersRepository");
   const emailVerificationCodeRepository = getInjection(
-    "IEmailVerificationCodesRepository",
+    "IEmailVerificationCodesRepository"
   );
   const accountsRepository = getInjection("IAccountsRepository");
 
@@ -33,7 +33,7 @@ it("Testing DI Modules Injection", async () => {
   expect(mailerService).toBeInstanceOf(MailerService);
   expect(usersRepository).toBeInstanceOf(UsersRepository);
   expect(emailVerificationCodeRepository).toBeInstanceOf(
-    EmailVerificationCodesRepository,
+    EmailVerificationCodesRepository
   );
   expect(accountsRepository).toBeInstanceOf(AccountsRepository);
 });

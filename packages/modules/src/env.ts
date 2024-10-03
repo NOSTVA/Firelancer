@@ -9,7 +9,7 @@ const envSchema = z.object({
   GITHUB_CLIENT_SECRET: z.string(),
   MAIL_HOST: z.string(),
   MAIL_USERNAME: z.string(),
-  MAIL_PASSWORD: z.string(),
+  MAIL_PASSWORD: z.string()
 });
 
 const env = envSchema.safeParse(process.env);

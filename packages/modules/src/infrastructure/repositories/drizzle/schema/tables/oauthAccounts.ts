@@ -10,9 +10,9 @@ export const oauthAccounts = pgTable(
     providerUserId: text("provider_user_id").notNull(),
     userId: text("user_id")
       .references(() => users.id)
-      .notNull(),
+      .notNull()
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.providerId, table.providerUserId] }),
-  }),
+    pk: primaryKey({ columns: [table.providerId, table.providerUserId] })
+  })
 );

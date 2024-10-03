@@ -10,5 +10,5 @@ export const accounts = pgTable("accounts", {
     .references(() => users.id)
     .notNull(),
   status: accountStatusEnum("status").notNull(),
-  creationDate: timestamp("creation_date").notNull(),
+  creationDate: timestamp("creation_date").notNull()
 });

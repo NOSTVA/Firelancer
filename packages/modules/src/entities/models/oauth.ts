@@ -7,7 +7,7 @@ export const oauthProviderSchema = z.enum(OAUTH_PROVIDERS);
 export const oauthAccountSchema = z.object({
   providerId: oauthProviderSchema,
   providerUserId: z.string(),
-  userId: z.string(),
+  userId: z.string()
 });
 
 export type OAuthProvider = z.infer<typeof oauthProviderSchema>;

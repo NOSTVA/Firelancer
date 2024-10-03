@@ -6,7 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { signInAction } from "./sign-in-action";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,32 +22,32 @@ export function SignInForm() {
     {
       actionProps: {},
       formProps: {},
-      errorMapProps: {},
-    },
+      errorMapProps: {}
+    }
   );
 
   return (
     <div className={"grid gap-6"}>
       <Form {...form}>
         <form onSubmit={handleSubmitWithAction}>
-          <div className="grid gap-2">
+          <div className='grid gap-2'>
             <FormField
               control={form.control}
-              name="email"
+              name='email'
               render={({ field }) => (
-                <FormItem className="grid gap-1">
-                  <FormLabel htmlFor="email" className="sr-only">
+                <FormItem className='grid gap-1'>
+                  <FormLabel htmlFor='email' className='sr-only'>
                     Email
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      id="email"
-                      placeholder="Email"
-                      type="email"
-                      autoCapitalize="none"
-                      autoComplete="email"
-                      autoCorrect="off"
+                      id='email'
+                      placeholder='Email'
+                      type='email'
+                      autoCapitalize='none'
+                      autoComplete='email'
+                      autoCorrect='off'
                     />
                   </FormControl>
                   <FormMessage />
@@ -57,20 +57,20 @@ export function SignInForm() {
 
             <FormField
               control={form.control}
-              name="password"
+              name='password'
               render={({ field }) => (
-                <FormItem className="grid gap-1">
-                  <FormLabel htmlFor="password" className="sr-only">
+                <FormItem className='grid gap-1'>
+                  <FormLabel htmlFor='password' className='sr-only'>
                     Password
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      id="password"
-                      placeholder="Password"
-                      type="password"
-                      autoCapitalize="none"
-                      autoCorrect="off"
+                      id='password'
+                      placeholder='Password'
+                      type='password'
+                      autoCapitalize='none'
+                      autoCorrect='off'
                     />
                   </FormControl>
                   <FormMessage />
@@ -83,7 +83,7 @@ export function SignInForm() {
 
             <Button disabled={action.isExecuting}>
               {action.isExecuting && (
-                <Icons.spinner className="mr-2 animate-spin h-4 w-4" />
+                <Icons.spinner className='mr-2 animate-spin h-4 w-4' />
               )}
               Sign In
             </Button>

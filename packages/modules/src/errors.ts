@@ -13,5 +13,5 @@ export {
   NotFoundError,
   AuthenticationError,
   UnauthenticatedError,
-  UnauthorizedError,
+  UnauthorizedError
 };

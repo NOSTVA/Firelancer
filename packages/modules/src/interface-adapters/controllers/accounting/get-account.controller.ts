@@ -3,7 +3,7 @@ import { InputParseError } from "../../../errors.js";
 import { getAccountUseCase } from "../../../application/use-cases/accounting/get-account.use-case.js";
 
 const inputSchema = z.object({
-  userId: z.string(),
+  userId: z.string()
 });
 
 export async function getAccountController(input: { userId: string }) {

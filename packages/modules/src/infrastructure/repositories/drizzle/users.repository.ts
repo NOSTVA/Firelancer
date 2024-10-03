@@ -12,11 +12,11 @@ import { db } from "./db/index.js";
 export class UsersRepository implements IUsersRepository {
   async getUser(
     id: string,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<User | undefined> {
     try {
       const query = conn.query.users.findFirst({
-        where: eq(users.id, id),
+        where: eq(users.id, id)
       });
 
       const user = await query.execute();
@@ -28,11 +28,11 @@ export class UsersRepository implements IUsersRepository {
   }
   async getUserByEmail(
     email: string,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<User | undefined> {
     try {
       const query = conn.query.users.findFirst({
-        where: eq(users.email, email),
+        where: eq(users.email, email)
       });
 
       const user = await query.execute();
@@ -45,7 +45,7 @@ export class UsersRepository implements IUsersRepository {
   async updateUserById(
     userId: string,
     input: Partial<User>,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ) {
     try {
       const query = conn
@@ -68,17 +68,17 @@ export class UsersRepository implements IUsersRepository {
   async getUserByOAuthProvider(
     providerId: OAuthProvider,
     providerUserId: string,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<User | undefined> {
     try {
       const query = conn.query.oauthAccounts.findFirst({
         where: and(
           eq(oauthAccounts.providerId, providerId),
-          eq(oauthAccounts.providerUserId, providerUserId),
+          eq(oauthAccounts.providerUserId, providerUserId)
         ),
         with: {
-          user: true,
-        },
+          user: true
+        }
       });
 
       const account = await query.execute();

@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import {
   IMailerService,
-  Options,
+  Options
 } from "../../application/services/mailer.service.interface.js";
 import nodemailer, { type Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport/index.js";
@@ -15,7 +15,7 @@ export class MailerService implements IMailerService {
   constructor() {
     this._transporter = nodemailer.createTransport({
       service: env.MAIL_HOST,
-      auth: { user: env.MAIL_USERNAME, pass: env.MAIL_PASSWORD },
+      auth: { user: env.MAIL_USERNAME, pass: env.MAIL_PASSWORD }
     });
   }
 

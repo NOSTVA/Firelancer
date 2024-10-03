@@ -29,7 +29,7 @@ export async function signUpUseCase(input: {
     memoryCost: 19456,
     timeCost: 2,
     outputLen: 32,
-    parallelism: 1,
+    parallelism: 1
   });
 
   const newUser = await transaction.create(async (tx) => {
@@ -39,9 +39,9 @@ export async function signUpUseCase(input: {
         email: input.email,
         emailVerified: false,
         username: input.username,
-        hashedPassword: passwordHash,
+        hashedPassword: passwordHash
       },
-      tx,
+      tx
     );
 
     await accountsRepository.createAccount(
@@ -49,9 +49,9 @@ export async function signUpUseCase(input: {
         id: randomUUID(),
         userId: user.id,
         status: "OPEN",
-        creationDate: new Date(),
+        creationDate: new Date()
       },
-      tx,
+      tx
     );
 
     return user;
@@ -66,7 +66,7 @@ export async function signUpUseCase(input: {
       id: newUser.id,
       username: newUser.username,
       email: newUser.email,
-      emailVerified: newUser.emailVerified,
-    },
+      emailVerified: newUser.emailVerified
+    }
   };
 }

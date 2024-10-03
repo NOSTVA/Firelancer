@@ -8,6 +8,6 @@ export const sessions = pgTable("sessions", {
     .notNull(),
   expiresAt: timestamp("expires_at", {
     withTimezone: true,
-    mode: "date",
-  }).notNull(),
+    mode: "date"
+  }).notNull()
 });

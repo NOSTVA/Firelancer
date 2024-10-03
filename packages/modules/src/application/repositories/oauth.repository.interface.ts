@@ -4,6 +4,6 @@ import type { TransactionScope } from "./transaction.interface.js";
 export interface IOAuthRepository {
   createAccount(
     input: OAuthAccount,
-    tx?: TransactionScope,
+    tx?: TransactionScope
   ): Promise<OAuthAccount>;
 }

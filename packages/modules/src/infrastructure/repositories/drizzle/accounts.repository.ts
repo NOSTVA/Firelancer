@@ -7,7 +7,7 @@ import { db } from "./db/index.js";
 import {
   accountTransactionMeta,
   accountTransactions,
-  accounts,
+  accounts
 } from "./schema/index.js";
 import { DatabaseOperationError } from "../../../errors.js";
 import { AccountTransaction } from "../../../entities/models/account-transaction.js";
@@ -16,7 +16,7 @@ import { AccountTransaction } from "../../../entities/models/account-transaction
 export class AccountsRepository implements IAccountsRepository {
   async createAccount(
     input: Account,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<Account> {
     try {
       const query = conn.insert(accounts).values(input).returning();
@@ -34,11 +34,11 @@ export class AccountsRepository implements IAccountsRepository {
   }
   async getAccountByUserId(
     userId: string,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<Account | undefined> {
     try {
       const query = conn.query.accounts.findFirst({
-        where: (t, { eq }) => eq(t.userId, userId),
+        where: (t, { eq }) => eq(t.userId, userId)
       });
 
       const account = await query.execute();
@@ -50,11 +50,11 @@ export class AccountsRepository implements IAccountsRepository {
   }
   async getAccountById(
     accountId: string,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<Account | undefined> {
     try {
       const query = conn.query.accounts.findFirst({
-        where: (t, { eq }) => eq(t.id, accountId),
+        where: (t, { eq }) => eq(t.id, accountId)
       });
 
       const account = await query.execute();
@@ -67,7 +67,7 @@ export class AccountsRepository implements IAccountsRepository {
   async updateAccountById(
     accountId: string,
     input: Partial<Account>,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<Account | undefined> {
     try {
       const query = conn
@@ -85,7 +85,7 @@ export class AccountsRepository implements IAccountsRepository {
   }
   async createAccountTransaction(
     input: AccountTransaction,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<AccountTransaction> {
     try {
       const { meta, ...transaction } = input;
@@ -105,7 +105,7 @@ export class AccountsRepository implements IAccountsRepository {
           if (createdTransaction && createdTransationMeta.length > 0) {
             return {
               ...createdTransaction,
-              meta: createdTransationMeta,
+              meta: createdTransationMeta
             };
           }
         }
@@ -113,7 +113,7 @@ export class AccountsRepository implements IAccountsRepository {
         if (createdTransaction) {
           return {
             ...createdTransaction,
-            meta: [],
+            meta: []
           };
         }
 
@@ -125,14 +125,14 @@ export class AccountsRepository implements IAccountsRepository {
   }
   async getAccountTransactionById(
     transactionId: string,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<AccountTransaction | undefined> {
     try {
       const transaction = await conn.query.accountTransactions.findFirst({
         where: (t, { eq }) => eq(t.id, transactionId),
         with: {
-          meta: true,
-        },
+          meta: true
+        }
       });
 
       return transaction;
@@ -142,7 +142,7 @@ export class AccountsRepository implements IAccountsRepository {
   }
   async getLatestSettledAccountTransaction(
     accountId: string,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<AccountTransaction | undefined> {
     try {
       const transaction = await conn.query.accountTransactions.findFirst({
@@ -150,12 +150,12 @@ export class AccountsRepository implements IAccountsRepository {
           and(
             eq(t.accountId, accountId),
             isNotNull(t.balance),
-            isNotNull(t.settledDate),
+            isNotNull(t.settledDate)
           ),
         orderBy: (t, { desc }) => desc(t.settledDate),
         with: {
-          meta: true,
-        },
+          meta: true
+        }
       });
 
       return transaction;
@@ -165,7 +165,7 @@ export class AccountsRepository implements IAccountsRepository {
   }
   async getUnsettledAccountTransactions(
     accountId: string,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<AccountTransaction[]> {
     try {
       const transations = conn.query.accountTransactions.findMany({
@@ -173,12 +173,12 @@ export class AccountsRepository implements IAccountsRepository {
           and(
             eq(t.accountId, accountId),
             isNull(t.balance),
-            isNull(t.settledDate),
+            isNull(t.settledDate)
           ),
         orderBy: (t, { desc }) => desc(t.creationDate),
         with: {
-          meta: true,
-        },
+          meta: true
+        }
       });
 
       return transations;
@@ -188,15 +188,15 @@ export class AccountsRepository implements IAccountsRepository {
   }
   async getAccountTransactions(
     accountId: string,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<AccountTransaction[]> {
     try {
       const transations = await conn.query.accountTransactions.findMany({
         where: (t, { eq }) => eq(t.accountId, accountId),
         orderBy: (t, { desc }) => [desc(t.settledDate), desc(t.reviewDueDate)],
         with: {
-          meta: true,
-        },
+          meta: true
+        }
       });
 
       return transations;
@@ -207,7 +207,7 @@ export class AccountsRepository implements IAccountsRepository {
   async updateAccountTransactionById(
     transactionId: string,
     input: Partial<AccountTransaction>,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<AccountTransaction | undefined> {
     try {
       const { meta, ...transation } = input;
@@ -241,7 +241,7 @@ export class AccountsRepository implements IAccountsRepository {
 
         return {
           ...updatedTransaction,
-          meta: updatedTransactionMeta.filter((entry) => entry !== undefined),
+          meta: updatedTransactionMeta.filter((entry) => entry !== undefined)
         };
       });
     } catch (err) {

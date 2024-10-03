@@ -5,7 +5,7 @@ import { authenticateUserUseCase } from "../../../application/use-cases/auth/aut
 import { InputParseError } from "../../../entities/errors/common.js";
 
 const inputSchema = z.object({
-  cookie: z.string(),
+  cookie: z.string()
 });
 
 export async function authenticateUserController(input: {

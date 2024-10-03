@@ -1,7 +1,7 @@
 export enum Context {
   ANY,
   FREELANCER,
-  CLIENT,
+  CLIENT
 }
 
 export interface NavItem {

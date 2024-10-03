@@ -7,22 +7,22 @@ import { accountTransactionMeta } from "../tables/account-transaction-meta.js";
 
 export const _user = relations(users, ({ many }) => ({
   oauth_accounts: many(oauthAccounts),
-  accounts: many(accounts),
+  accounts: many(accounts)
 }));
 
 export const _oauthAccount = relations(oauthAccounts, ({ one }) => ({
   user: one(users, {
     fields: [oauthAccounts.userId],
-    references: [users.id],
-  }),
+    references: [users.id]
+  })
 }));
 
 export const _account = relations(accounts, ({ many, one }) => ({
   user: one(users, {
     fields: [accounts.userId],
-    references: [users.id],
+    references: [users.id]
   }),
-  transactions: many(accountTransactions),
+  transactions: many(accountTransactions)
 }));
 
 export const _accountTransactions = relations(
@@ -30,14 +30,14 @@ export const _accountTransactions = relations(
   ({ one, many }) => ({
     account: one(accounts, {
       fields: [accountTransactions.accountId],
-      references: [accounts.id],
+      references: [accounts.id]
     }),
     relatedTransaction: one(accountTransactions, {
       fields: [accountTransactions.relatedTransactionId],
-      references: [accountTransactions.id],
+      references: [accountTransactions.id]
     }),
-    meta: many(accountTransactionMeta),
-  }),
+    meta: many(accountTransactionMeta)
+  })
 );
 
 export const _accountTransactionMeta = relations(
@@ -45,7 +45,7 @@ export const _accountTransactionMeta = relations(
   ({ one, many }) => ({
     transaction: one(accountTransactions, {
       fields: [accountTransactionMeta.accountTransactionId],
-      references: [accountTransactions.id],
-    }),
-  }),
+      references: [accountTransactions.id]
+    })
+  })
 );

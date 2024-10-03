@@ -6,7 +6,7 @@ export const accountSchema = z.object({
   id: z.string().uuid(),
   userId: z.string(),
   status: z.enum(ACCOUNT_STATUS),
-  creationDate: z.date(),
+  creationDate: z.date()
 });
 
 export type Account = z.infer<typeof accountSchema>;

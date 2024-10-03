@@ -9,6 +9,6 @@ export const emailVerificationCodes = pgTable("email_verification_codes", {
   email: text("email").notNull(),
   expiresAt: timestamp("expires_at", {
     withTimezone: true,
-    mode: "date",
-  }).notNull(),
+    mode: "date"
+  }).notNull()
 });

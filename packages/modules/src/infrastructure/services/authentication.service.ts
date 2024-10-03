@@ -16,7 +16,7 @@ export class AuthenticationService implements IAuthenticationService {
 
   constructor(
     @inject(DI_SYMBOLS.IUsersRepository)
-    private _usersRepository: IUsersRepository,
+    private _usersRepository: IUsersRepository
   ) {
     this._lucia = new Lucia(luciaAdapter, {
       sessionExpiresIn: new TimeSpan(2, "w"),
@@ -24,21 +24,20 @@ export class AuthenticationService implements IAuthenticationService {
         name: env.SESSION_COOKIE,
         expires: false,
         attributes: {
-          secure: env.ENV === "production",
-        },
+          secure: env.ENV === "production"
+        }
       },
       getUserAttributes: (attributes) => {
         return {
           username: attributes.username,
           email: attributes.email,
-          emailVerified: attributes.emailVerified,
+          emailVerified: attributes.emailVerified
         };
-      },
+      }
     });
   }
-
   async validateSession(
-    sessionId: string,
+    sessionId: string
   ): Promise<{ user: User | null; session: Session | null }> {
     const { user, session } = await this._lucia.validateSession(sessionId);
 
@@ -49,9 +48,8 @@ export class AuthenticationService implements IAuthenticationService {
 
     return { user: null, session: null };
   }
-
   async createSession(
-    user: User,
+    user: User
   ): Promise<{ session: Session; cookie: Cookie }> {
     const luciaSession = await this._lucia.createSession(user.id, {});
 
@@ -60,7 +58,6 @@ export class AuthenticationService implements IAuthenticationService {
 
     return { session, cookie };
   }
-
   async invalidateSession(sessionId: string): Promise<{ blankCookie: Cookie }> {
     await this._lucia.invalidateSession(sessionId);
 
@@ -68,19 +65,15 @@ export class AuthenticationService implements IAuthenticationService {
 
     return { blankCookie };
   }
-
   generateUserId(): string {
     return generateIdFromEntropySize(10);
   }
-
   readSessionCookie(cookie: string): string | null {
     return this._lucia.readSessionCookie(cookie);
   }
-
   createSessionCookie(sessionId: Session["id"]): Cookie {
     return this._lucia.createSessionCookie(sessionId);
   }
-
   createBlankSessionCookie(): Cookie {
     return this._lucia.createBlankSessionCookie();
   }

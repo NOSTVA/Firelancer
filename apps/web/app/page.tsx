@@ -11,13 +11,13 @@ export default async function Page() {
   }
 
   return (
-    <div className="flex flex-row">
-      <div className="flex flex-row items-center">
-        <Button variant={"link"} className="rounded-full" asChild>
+    <div className='flex flex-row'>
+      <div className='flex flex-row items-center'>
+        <Button variant={"link"} className='rounded-full' asChild>
           <Link href={"/signin"}>Sign in</Link>
         </Button>
         <span>/</span>
-        <Button variant={"link"} className="rounded-full" asChild>
+        <Button variant={"link"} className='rounded-full' asChild>
           <Link href={"/signup"}>Sign up</Link>
         </Button>
       </div>

@@ -13,7 +13,7 @@ export class EmailVerificationCodesRepository
 {
   async createVerificationCode(
     input: EmailVerificationCode,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ): Promise<EmailVerificationCode> {
     try {
       const query = conn
@@ -48,7 +48,7 @@ export class EmailVerificationCodesRepository
   }
   async deleteVerificationCodeByUserId(
     userId: string,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ) {
     try {
       const query = conn
@@ -65,11 +65,11 @@ export class EmailVerificationCodesRepository
   }
   async getVerificationCodeByUserId(
     userId: string,
-    conn: DrizzleConnection = db,
+    conn: DrizzleConnection = db
   ) {
     try {
       const query = conn.query.emailVerificationCodes.findFirst({
-        where: (t, { eq }) => eq(t.userId, userId),
+        where: (t, { eq }) => eq(t.userId, userId)
       });
 
       const code = await query.execute();

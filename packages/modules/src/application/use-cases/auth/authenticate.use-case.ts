@@ -29,8 +29,8 @@ export async function authenticateUserUseCase(input: {
           id: user.id,
           username: user.username,
           email: user.email,
-          emailVerified: user.emailVerified,
+          emailVerified: user.emailVerified
         }
-      : null,
+      : null
   };
 }

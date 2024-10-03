@@ -4,7 +4,7 @@ import { cache } from "react";
 
 export const getSession = cache(async () => {
   const { session, user } = await auth.authenticateUser({
-    cookie: cookies().toString(),
+    cookie: cookies().toString()
   });
 
   return { session, user };

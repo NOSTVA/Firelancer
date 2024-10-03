@@ -5,11 +5,11 @@ import { signInCallbackUseCase } from "../../../../application/use-cases/auth/gi
 
 const inputSchema = z.object({
   code: z.string(),
-  state: z.string(),
+  state: z.string()
 });
 
 export async function signInGithubCallbackController(
-  input: Partial<z.infer<typeof inputSchema>>,
+  input: Partial<z.infer<typeof inputSchema>>
 ): Promise<{ cookie: Cookie }> {
   const { data, error: inputParseError } = inputSchema.safeParse(input);
 

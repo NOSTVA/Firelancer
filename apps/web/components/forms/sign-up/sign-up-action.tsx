@@ -5,7 +5,7 @@ import { auth } from "@firelancer/modules/controllers";
 import { cookies } from "next/headers";
 import {
   AuthenticationError,
-  InputParseError,
+  InputParseError
 } from "@firelancer/modules/errors";
 import { redirect } from "next/navigation";
 
@@ -21,13 +21,13 @@ export const signUpAction = actionClient
         err instanceof AuthenticationError
       ) {
         return {
-          failure: err.message,
+          failure: err.message
         };
       }
 
       return {
         failure:
-          "An error happened. The developers have been notified. Please try again later.",
+          "An error happened. The developers have been notified. Please try again later."
       };
     }
 

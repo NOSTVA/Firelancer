@@ -5,5 +5,5 @@ export const users = pgTable("users", {
   username: text("username").notNull(),
   email: text("email").unique(),
   emailVerified: boolean("email_verified").notNull(),
-  hashedPassword: text("hashed_password"),
+  hashedPassword: text("hashed_password")
 });

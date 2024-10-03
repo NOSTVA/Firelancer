@@ -4,18 +4,18 @@ import type { TransactionScope } from "./transaction.interface.js";
 export interface IEmailVerificationCodesRepository {
   createVerificationCode(
     input: EmailVerificationCode,
-    tx?: TransactionScope,
+    tx?: TransactionScope
   ): Promise<EmailVerificationCode>;
   deleteVerificationCode(
     code: string,
-    tx?: TransactionScope,
+    tx?: TransactionScope
   ): Promise<EmailVerificationCode | undefined>;
   deleteVerificationCodeByUserId(
     userId: string,
-    tx?: TransactionScope,
+    tx?: TransactionScope
   ): Promise<EmailVerificationCode | undefined>;
   getVerificationCodeByUserId(
     userId: string,
-    tx?: TransactionScope,
+    tx?: TransactionScope
   ): Promise<EmailVerificationCode | undefined>;
 }

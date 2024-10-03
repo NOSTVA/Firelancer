@@ -4,9 +4,9 @@ import type { FC, PropsWithChildren } from "react";
 
 export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => (
   <NextThemeProvider
-    attribute="class"
-    defaultTheme="system"
-    storageKey="theme"
+    attribute='class'
+    defaultTheme='system'
+    storageKey='theme'
     enableSystem
     disableTransitionOnChange
   >
