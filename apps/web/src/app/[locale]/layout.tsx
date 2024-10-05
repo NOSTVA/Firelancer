@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import localFont from "next/font/local";
-import BaseLayout from "@/layouts/Base";
+import BaseLayout from "@/layouts/base";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { LocaleProvider } from "@/providers/locale-provider";
 import { DirectionProvider } from "@/providers/direction-provider";
