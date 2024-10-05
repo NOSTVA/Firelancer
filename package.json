@@ -10,7 +10,6 @@
     "dev": "lerna run dev",
     "test": "lerna run test",
     "lint": "lerna run lint",
-    "web:start": "npm run start -w apps/web",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "engines": {
